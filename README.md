@@ -1,4 +1,4 @@
-﻿# 🚀 Curso IoT ESP32 - UNSE
+﻿# 🚀 Curso IoT ESP32 - UNSE - 2025
 
 **Universidad Nacional de Santiago del Estero**  
 **Instructor:** Ing. Fernando Raúl Vera Suasnávar | **Año:** 2025
