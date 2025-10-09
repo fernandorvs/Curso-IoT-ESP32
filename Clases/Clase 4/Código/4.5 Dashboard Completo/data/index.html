@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ESP32 IoT Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">ESP32 IoT</div>
+            <div class="subtitle">Sistemas Microprogramables • UNSE</div>
+        </div>
+        
+        <div class="dashboard">
+            <div class="card">
+                <div class="card-icon">🌡️</div>
+                <div class="card-title">Temperatura Interna</div>
+                <div class="temp-display" id="temp">--°C</div>
+                <div class="temp-label">Sensor ESP32</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-icon">💡</div>
+                <div class="card-title">Control de LED</div>
+                
+                <div class="switch-container">
+                    <label class="switch">
+                        <input type="checkbox" id="toggleLed">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="led-status" id="ledStatus">LED Apagado</div>
+                
+                <div class="led-visual" id="ledVisual"></div>
+                
+                <div class="brightness-control">
+                    <div class="brightness-label">Brillo: <span id="brightValue">50</span>%</div>
+                    <input type="range" class="brightness-slider" id="brightness" min="0" max="100" value="50">
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <span class="status-indicator"></span>
+            IP: <span id="ip">--</span> | Última actualización: <span id="time">--</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

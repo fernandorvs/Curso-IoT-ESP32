@@ -1,0 +1,76 @@
+{
+	"folders": [
+		{
+			"name": "1.1 Blink",
+			"path": "Clase 1/Código/1.1 Blink"
+		},
+		{
+			"name": "2.1 Led con PWM",
+			"path": "Clase 2/Código/2.1 Led con PWM"
+		},
+		{
+			"name": "2.2 Pulsador con Antirrebote",
+			"path": "Clase 2/Código/2.2 Pulsador con Antirrebote"
+		},
+		{
+			"name": "2.3 Blink no bloqueante",
+			"path": "Clase 2/Código/2.3 Blink no bloqueante"
+		},
+		{
+			"name": "2.4 Pulsador no bloqueante",
+			"path": "Clase 2/Código/2.4 Pulsador no bloqueante"
+		},
+		{
+			"name": "2.5 Blink + Pulsador no bloqueantes",
+			"path": "Clase 2/Código/2.5 Blink + Pulsador no bloqueantes"
+		},
+		{
+			"name": "2.6 FSM Máquina de estado",
+			"path": "Clase 2/Código/2.6 FSM Máquina de estado"
+		},
+		{
+			"name": "3.1 Lectura de ADC",
+			"path": "Clase 3/Código/3.1 Lectura de ADC"
+		},
+		{
+			"name": "3.2 Filtros Digitales",
+			"path": "Clase 3/Código/3.2 Filtros Digitales"
+		},
+		{
+			"name": "3.3 Lectura de NTC",
+			"path": "Clase 3/Código/3.3 Lectura de NTC"
+		},
+		{
+			"name": "3.4 Lectura de DS18B20",
+			"path": "Clase 3/Código/3.4 Lectura de DS18B20"
+		},
+		{
+			"name": "3.5 OLED",
+			"path": "Clase 3/Código/3.5 OLED"
+		},
+		{
+			"name": "3.6 Temperaturas en OLED",
+			"path": "Clase 3/Código/3.6 Temperaturas en OLED"
+		},
+		{
+			"name": "4.1 WiFi Básico",
+			"path": "Clase 4/Código/4.1 WiFi Básico"
+		},
+		{
+			"name": "4.2 Servidor Básico",
+			"path": "Clase 4/Código/4.2 Servidor Básico"
+		},
+		{
+			"name": "4.3 Control LED Remoto",
+			"path": "Clase 4/Código/4.3 Control LED Remoto"
+		},
+		{
+			"name": "4.4 Lectura de Sensores",
+			"path": "Clase 4/Código/4.4 Lectura de Sensores"
+		},
+		{
+			"name": "4.5 Dashboard Completo",
+			"path": "Clase 4/Código/4.5 Dashboard Completo"
+		}
+	]
+}
