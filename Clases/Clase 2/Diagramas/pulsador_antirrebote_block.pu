@@ -1,0 +1,33 @@
+@startuml pulsador_antirrebote
+!theme plain
+
+start
+
+:Configurar pines;
+
+repeat
+  :Leer estado del pulsador;
+
+  if (Pulsador presionado?) then (SI)
+    :Esperar 50ms;
+    
+    :Leer pulsador nuevamente;
+    
+    if (Sigue presionado?) then (SI)
+      :Alternar estado del LED;
+      
+      :Esperar hasta soltar pulsador;
+      
+    else (NO)
+      :Falsa activación ignorada;
+    endif
+    
+  else (NO)
+    :Continuar;
+  endif
+
+repeat while (loop infinito)
+
+stop
+
+@enduml

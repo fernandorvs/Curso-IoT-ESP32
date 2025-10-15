@@ -1,0 +1,35 @@
+@startuml wifi_basico
+!theme plain
+
+start
+
+:Inicializar Serial 115200;
+
+:Configurar WiFi modo STA;
+note right
+  WiFi.mode(WIFI_STA)
+  Modo estación (cliente)
+end note
+
+:Conectar a WiFi;
+note right
+  WiFi.begin(ssid, password)
+end note
+
+repeat
+  :Esperar 1 segundo;
+  if (¿Conectado?) then (SI)
+    :Mostrar información de red;
+    note right
+      IP, Gateway, DNS, RSSI
+    end note
+    stop
+  else (NO)
+    :Incrementar intentos;
+  endif
+repeat while (Intentos < 30)
+
+:Error: No se pudo conectar;
+stop
+
+@enduml

@@ -35,7 +35,13 @@ Sistema web que muestra lecturas de sensores de temperatura (NTC y DS18B20) a tr
 
 ---
 
-## 📚 Clase
+## � Diagrama de Flujo
+
+![Diagrama Lectura Sensores](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/lectura_sensores.pu)
+
+---
+
+## �📚 Clase
 
 **Módulo:** Clase 4 - Conectividad y Protocolos  
 Ver `src/main.cpp` para detalles de implementación

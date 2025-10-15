@@ -1,0 +1,45 @@
+@startuml filtros_digitales
+!theme plain
+
+start
+
+:Inicializar Serial 115200;
+
+:Inicializar variable EMA = 0;
+note right
+  Valor inicial del filtro
+  Converge tras primeras lecturas
+end note
+
+repeat
+  :Leer ADC → x = analogRead(34);
+  note right
+    Lectura cruda (ruidosa)
+    Valor entre 0-4095
+  end note
+  
+  :Aplicar filtro EMA;
+  note right
+    **ema = α·x + (1-α)·ema**
+    **ema = 0.2·x + 0.8·ema**
+    
+    α = 0.2 (balance)
+    • Menor α = más suave
+    • Mayor α = más rápido
+  end note
+  
+  :Mostrar ambas señales;
+  note right
+    **Serial.printf("%d,%.1f")**
+    • Cruda: x (ruidosa)
+    • Filtrada: ema (suave)
+    Formato para Serial Plotter
+  end note
+  
+  :Esperar 100ms;
+
+repeat while (loop infinito)
+
+stop
+
+@enduml

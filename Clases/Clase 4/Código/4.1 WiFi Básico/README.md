@@ -32,7 +32,13 @@ Conexión básica a red WiFi en modo estación (STA). Muestra información de re
 
 ---
 
-## 📚 Clase
+## � Diagrama de Flujo
+
+![Diagrama WiFi Básico](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/wifi_basico.pu)
+
+---
+
+## �📚 Clase
 
 **Módulo:** Clase 4 - Conectividad y Protocolos  
 Ver `src/main.cpp` para detalles de implementación

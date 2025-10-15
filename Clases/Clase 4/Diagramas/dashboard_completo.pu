@@ -1,0 +1,79 @@
+@startuml dashboard_completo
+!theme plain
+
+start
+
+:Inicializar Serial;
+
+:Inicializar LittleFS;
+note right
+  Sistema de archivos
+  para HTML/CSS/JS
+end note
+
+:Inicializar OLED I2C;
+note right
+  u8g2.begin()
+  SDA: GPIO20, SCL: GPIO21
+end note
+
+:Conectar WiFi;
+
+:Configurar PWM para LED;
+note right
+  ledcSetup(channel, freq, res)
+  ledcAttachPin(LED_PIN, channel)
+end note
+
+:Crear servidor;
+
+:Registrar rutas;
+note right
+  "/" - index.html desde LittleFS
+  "/api/data" - GET datos JSON
+  "/api/led" - POST control PWM
+end note
+
+:Iniciar servidor;
+
+repeat
+  partition "Lectura Sensores" {
+    if (Cada 2 segundos?) then (SI)
+      :Leer temperatura interna;
+      note right
+        temperatureRead()
+      end note
+    endif
+  }
+  
+  partition "Actualizar OLED" {
+    if (Cada 500ms?) then (SI)
+      :Limpiar buffer;
+      :Dibujar temp y estado LED;
+      :Enviar a pantalla;
+    endif
+  }
+  
+  partition "Servidor Web" {
+    :Procesar peticiones;
+    note right
+      Servir archivos
+      API REST JSON
+      Control PWM
+    end note
+  }
+  
+  partition "Monitoreo WiFi" {
+    if (Cada 10 segundos?) then (SI)
+      :Verificar conexión;
+      if (¿Desconectado?) then (SI)
+        :Reconectar WiFi;
+      endif
+    endif
+  }
+
+repeat while (continúa)
+
+stop
+
+@enduml

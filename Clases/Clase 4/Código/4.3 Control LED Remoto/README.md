@@ -33,7 +33,13 @@ Ejemplo SIMPLE de control remoto de LED vía web usando GET y POST. Interface mi
 
 ---
 
-## 📚 Clase
+## � Diagrama de Flujo
+
+![Diagrama Control LED](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/control_led_remoto.pu)
+
+---
+
+## �📚 Clase
 
 **Módulo:** Clase 4 - Conectividad y Protocolos  
 Ver `src/main.cpp` para detalles de implementación

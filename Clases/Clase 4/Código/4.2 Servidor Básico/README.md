@@ -32,7 +32,13 @@ Servidor HTTP básico que sirve página web desde ESP32. Muestra información de
 
 ---
 
-## 📚 Clase
+## � Diagrama de Flujo
+
+![Diagrama Servidor Básico](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/servidor_basico.pu)
+
+---
+
+## �📚 Clase
 
 **Módulo:** Clase 4 - Conectividad y Protocolos  
 Ver `src/main.cpp` para detalles de implementación

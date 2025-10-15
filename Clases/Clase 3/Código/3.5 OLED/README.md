@@ -31,7 +31,13 @@ Control básico de pantalla OLED SSD1306 128x64 mediante I2C. Muestra texto y gr
 
 ---
 
-## 📚 Clase
+## 📊 Diagrama de Flujo
+
+![Diagrama OLED](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%203/Diagramas/oled_basico.pu)
+
+---
+
+## � Clase
 
 **Módulo:** Clase 3 - Sensores y Periféricos  
 Ver `src/main.cpp` para detalles de implementación

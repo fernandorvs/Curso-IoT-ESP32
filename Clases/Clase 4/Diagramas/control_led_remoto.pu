@@ -1,0 +1,48 @@
+@startuml control_led_remoto
+!theme plain
+
+start
+
+:Inicializar Serial y LED;
+
+:Conectar WiFi;
+
+:Crear servidor en puerto 80;
+
+:Registrar rutas HTTP;
+note right
+  "/" - Página principal
+  "/estado" - GET estado
+  "/on" - POST encender
+  "/off" - POST apagar
+end note
+
+:Iniciar servidor;
+
+repeat
+  :Procesar peticiones;
+  note right
+    server.handleClient()
+  end note
+  
+  if (Petición recibida?) then (SI)
+    if (Ruta = "/on"?) then (SI)
+      :Encender LED;
+      :ledState = true;
+      :Enviar respuesta OK;
+    else if (Ruta = "/off"?) then (SI)
+      :Apagar LED;
+      :ledState = false;
+      :Enviar respuesta OK;
+    else if (Ruta = "/estado"?) then (SI)
+      :Enviar estado actual;
+    else (/)
+      :Servir página HTML;
+    endif
+  endif
+
+repeat while (continúa)
+
+stop
+
+@enduml

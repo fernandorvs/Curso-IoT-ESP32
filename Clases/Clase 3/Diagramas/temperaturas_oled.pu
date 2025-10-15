@@ -1,0 +1,87 @@
+@startuml temperaturas_oled
+!theme plain
+
+start
+
+:Inicializar I2C;
+note right
+  Wire.begin(20, 21)
+  Para OLED SSD1306
+end note
+
+:Inicializar OLED;
+note right
+  u8g2.begin()
+end note
+
+:Inicializar DS18B20;
+note right
+  ds.begin()
+  Sensor digital en GPIO4
+end note
+
+:Definir constantes NTC;
+note right
+  R_FIXED, R0, BETA, etc.
+end note
+
+repeat
+  partition "Lectura NTC (Analógico)" {
+    :Leer ADC → raw;
+    :Calcular voltaje → v;
+    :Calcular resistencia → R;
+    :Aplicar Steinhart-Hart → Tc;
+  }
+  
+  partition "Lectura DS18B20 (Digital)" {
+    :Solicitar temperatura;
+    note right
+      ds.requestTemperatures()
+      Demora ~750ms
+    end note
+    :Obtener temperatura → Td;
+    note right
+      ds.getTempCByIndex(0)
+    end note
+  }
+  
+  partition "Actualizar Display" {
+    :Limpiar buffer OLED;
+    
+    :Configurar fuente pequeña;
+    note right
+      u8g2_font_7x13_tf
+    end note
+    
+    :Mostrar "NTC: XX.X C";
+    note right
+      setCursor + print
+      Temperatura analógica
+    end note
+    
+    :Mostrar "DS18B20: XX.X C";
+    note right
+      Temperatura digital
+    end note
+    
+    :Configurar fuente grande;
+    note right
+      u8g2_font_helvB10_tf
+    end note
+    
+    :Centrar y mostrar "UNSE";
+    note right
+      Calcular posición centrada
+      con getStrWidth()
+    end note
+    
+    :Enviar buffer a pantalla;
+  }
+  
+  :Esperar 500ms;
+
+repeat while (loop infinito)
+
+stop
+
+@enduml

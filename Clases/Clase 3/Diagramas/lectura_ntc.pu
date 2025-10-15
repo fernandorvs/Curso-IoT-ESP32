@@ -1,0 +1,40 @@
+@startuml lectura_ntc
+!theme plain
+
+start
+
+:Inicializar Serial y LED;
+
+repeat
+  :Leer ADC;
+  
+  :Convertir a voltaje;
+  note right
+    v = raw × (3.3 / 4095)
+  end note
+  
+  :Calcular resistencia NTC;
+  note right
+    R = R_FIXED × (VREF/v - 1)
+  end note
+  
+  :Aplicar Steinhart-Hart → Tc;
+  note right
+    1/T = 1/T0 + ln(R/R0)/BETA
+  end note
+  
+  :Mostrar temperatura;
+  
+  if (Tc > 30°C?) then (SI)
+    :LED ON;
+  else (NO)
+    :LED OFF;
+  endif
+  
+  :Esperar 500ms;
+
+repeat while (continúa)
+
+stop
+
+@enduml

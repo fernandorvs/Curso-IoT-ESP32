@@ -1,0 +1,45 @@
+@startuml modular_no_block
+!theme plain
+
+start
+
+partition "Inicialización" {
+  :initLed();
+  note right
+    pinMode(ledPin, OUTPUT)
+    Variables de blink
+  end note
+  
+  :initPulsador();
+  note right
+    pinMode(buttonPin, INPUT_PULLUP)
+    Variables de debounce
+  end note
+}
+
+partition "Loop Principal" {
+  repeat
+    :servicePulsador();
+    note right
+      Leer botón con debounce
+      Toggle parpadeo en flanco
+    end note
+    
+    :serviceLed();
+    note right
+      Parpadeo con millis()
+      Solo si está habilitado
+    end note
+    
+    :Otros servicios;
+    note right
+      UART, sensores, WiFi
+      Módulos adicionales
+    end note
+    
+  repeat while (continúa)
+}
+
+stop
+
+@enduml

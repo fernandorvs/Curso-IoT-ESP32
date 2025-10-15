@@ -1,0 +1,116 @@
+@startuml api_rest_endpoints
+
+!theme blueprint
+title API REST Endpoints - ESP32 IoT Dashboard
+
+package "API REST Endpoints" {
+    
+    interface "GET /" as root {
+        + Servir página principal
+        + Cargar dashboard HTML
+        + Incluir CSS y JavaScript
+        --
+        Response: text/html
+        Content: Interfaz completa
+    }
+    
+    interface "GET /api/sensors" as sensors_get {
+        + Leer temperatura interna
+        + Obtener información del sistema
+        + Calcular uptime
+        --
+        Response: application/json
+        {
+          "temperature": 28.5,
+          "uptime": 123456,
+          "free_memory": 250000,
+          "wifi_rssi": -45
+        }
+    }
+    
+    interface "GET /api/led" as led_get {
+        + Obtener estado actual del LED
+        + Retornar brillo configurado
+        + Incluir información PWM
+        --
+        Response: application/json
+        {
+          "state": true,
+          "brightness": 75,
+          "pwm_value": 128
+        }
+    }
+    
+    interface "POST /api/led" as led_post {
+        + Controlar estado del LED
+        + Modificar brillo
+        + Aplicar cambios de PWM
+        --
+        Parameters:
+        - action=toggle|on|off|brightness
+        - value=0-100 (para brightness)
+        --
+        Response: application/json
+        {"success": true, "state": true}
+    }
+}
+
+package "Acciones de Control" {
+    class "Toggle LED" as toggle {
+        + action=toggle
+        + Alternar estado actual
+        + Mantener brillo configurado
+    }
+    
+    class "Encender LED" as on {
+        + action=on
+        + Forzar estado ON
+        + Aplicar último brillo
+    }
+    
+    class "Apagar LED" as off {
+        + action=off
+        + Forzar estado OFF
+        + PWM = 0
+    }
+    
+    class "Cambiar Brillo" as brightness {
+        + action=brightness&value=X
+        + Rango: 0-100%
+        + Conversión logarítmica a PWM
+        + Auto-encender si value > 0
+    }
+}
+
+package "Respuestas de Error" {
+    class "404 Not Found" as error404 {
+        + Endpoint no existe
+        + Mensaje descriptivo
+        + Sugerencia de URLs válidas
+    }
+    
+    class "400 Bad Request" as error400 {
+        + Parámetros inválidos
+        + Acción no reconocida
+        + Valores fuera de rango
+    }
+    
+    class "500 Server Error" as error500 {
+        + Error interno del ESP32
+        + Problema de hardware
+        + Falla de conectividad
+    }
+}
+
+' Conexiones
+led_post --> toggle : action=toggle
+led_post --> on : action=on
+led_post --> off : action=off
+led_post --> brightness : action=brightness
+
+' Notas explicativas
+note top of sensors_get : "Actualización automática\ncada 3 segundos"
+note right of led_post : "Soporta Content-Type:\napplication/x-www-form-urlencoded"
+note bottom of brightness : "Conversión logarítmica:\nPWM = (e^(x/25) - 1) / (e^4 - 1) * 255"
+
+@enduml

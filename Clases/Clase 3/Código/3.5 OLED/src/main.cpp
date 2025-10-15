@@ -28,6 +28,7 @@
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
 
 void setup() {
+    // ESP32 SDA = GPIO33, SCL = GPIO25
     // ESP32-C3 SDA = GPIO20, SCL = GPIO21
     Wire.begin(20, 21);
     u8g2.begin(); 

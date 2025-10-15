@@ -5,7 +5,7 @@
 
 ## 🔧 Cómo Usar los Proyectos
 
-### Requisitostivos
+### Objetivos
 
 Al finalizar esta clase serás capaz de:
 - Leer sensores analógicos usando el ADC del ESP32
@@ -38,7 +38,27 @@ Al finalizar esta clase serás capaz de:
 - **Resolución**: 128x64 píxeles
 - **Dirección**: 0x3C (típica)
 
-## 💻 Proyectos Incluidos
+## 📊 Diagramas de Flujo
+
+### 3.1 - Lectura de ADC
+![Diagrama Lectura ADC](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%203/Diagramas/lectura_adc.pu)
+
+### 3.2 - Filtros Digitales
+![Diagrama Filtros Digitales](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%203/Diagramas/filtros_digitales.pu)
+
+### 3.3 - Lectura de NTC
+![Diagrama Lectura NTC](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%203/Diagramas/lectura_ntc.pu)
+
+### 3.4 - Lectura de DS18B20
+![Diagrama DS18B20](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%203/Diagramas/lectura_ds18b20.pu)
+
+### 3.5 - OLED Básico
+![Diagrama OLED](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%203/Diagramas/oled_basico.pu)
+
+### 3.6 - Temperaturas en OLED
+![Diagrama Sistema Integrado](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%203/Diagramas/temperaturas_oled.pu)
+
+##  Proyectos Incluidos
 
 ### 3.1 - Lectura de ADC
 📁 `Código/3.1 Lectura de ADC/` | 📄 [README](Código/3.1%20Lectura%20de%20ADC/README.md)
@@ -76,8 +96,7 @@ Control básico de display OLED SSD1306 con comunicación I2C.
 Sistema integrado: dos sensores de temperatura visualizados en OLED.
 - **Hardware**: OLED + NTC + DS18B20 (combinación de proyectos anteriores)
 
-
-## � Cómo Usar los Proyectos
+## 🔧 Cómo Usar los Proyectos
 
 ### Requisitos
 - **PlatformIO**: Extensión para VS Code o CLI

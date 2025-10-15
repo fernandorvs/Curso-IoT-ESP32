@@ -1,0 +1,34 @@
+@startuml pulsador_no_block
+!theme plain
+
+start
+
+:Inicializar;
+:Configurar;
+
+repeat
+  :Leer pulsador;
+  
+  if (¿Cambió?) then (SI)
+    if (¿>50ms?) then (SI)
+      :Actualizar tiempo;
+      :Actualizar estado;
+      if (¿LOW?) then (SI)
+        :Enviar 
+        "PRESIONADO";
+      else (NO)
+        :Enviar 
+        "SUELTO";
+      endif
+    else (NO)
+      :Ignorar rebote;
+    endif
+  else (NO)
+    :Sin cambios;
+  endif
+
+repeat while (continúa)
+
+stop
+
+@enduml

@@ -1,0 +1,38 @@
+@startuml led_pwm_flowchart
+!theme plain
+' title Diagrama de Flujo - Configuración PWM ESP32
+
+start
+
+:Inicializar configuración PWM;
+' note right
+'   **ledcSetup(0, 5000, 8)**
+'   • Canal: 0
+'   • Frecuencia: 5 kHz
+'   • Resolución: 8 bits (0-255)
+' end note
+
+:Asociar GPIO al canal PWM;
+' note right
+'   **ledcAttachPin(2, 0)**
+'   • GPIO2 → Canal 0
+'   • Conexión física establecida
+' end note
+
+:Configurar duty cycle y activar PWM a 50%;
+' note right
+'   **ledcWrite(0, 128)**
+'   • Canal: 0
+'   • Valor: 128/255
+'   • Duty Cycle: 50%
+' end note
+
+:LED brilla al 50%;
+' note right
+'   Señal PWM generada
+'   LED a mitad de intensidad
+' end note
+
+stop
+
+@enduml

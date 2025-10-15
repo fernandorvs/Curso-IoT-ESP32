@@ -1,0 +1,57 @@
+@startuml fsm_ejemplo_minimo
+!theme plain
+skinparam backgroundColor #Ffffff
+skinparam state {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontColor #01579B
+    FontSize 12
+}
+
+title FSM Mínima - 3 Estados
+
+[*] --> OFF : Estado inicial
+
+state OFF {
+    OFF : digitalWrite(2, LOW)
+    OFF : LED apagado
+}
+
+state ON {
+    ON : digitalWrite(2, HIGH)
+    ON : LED encendido
+}
+
+state BLINK {
+    BLINK : LED toggle cada 300ms
+    BLINK : millis() no bloqueante
+}
+
+OFF --> ON : Botón presionado
+ON --> BLINK : Botón presionado
+BLINK --> OFF : Botón presionado
+
+OFF --> OFF : Sin entrada
+ON --> ON : Sin entrada
+BLINK --> BLINK : Continúa parpadeando
+
+note right of OFF
+  **Estado inicial**
+  - LED = LOW
+  - Espera evento
+end note
+
+note right of ON
+  **Estado simple**
+  - LED = HIGH
+  - Sin temporización
+end note
+
+note right of BLINK
+  **Estado temporizado**
+  - Toggle cada 300ms
+  - timer = millis()
+  - ledState = !ledState
+end note
+
+@enduml

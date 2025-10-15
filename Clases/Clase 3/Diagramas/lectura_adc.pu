@@ -1,0 +1,41 @@
+@startuml lectura_adc
+!theme plain
+
+start
+
+:Inicializar Serial 115200;
+note right
+  Preparar comunicación
+  para ver valores en monitor
+end note
+
+repeat
+  :Leer pin ADC (34);
+  note right
+    **analogRead(PIN_ADC)**
+    • Retorna valor raw: 0-4095
+    • Resolución: 12 bits
+    • Rango: 0V a 3.3V
+  end note
+  
+  :Convertir raw a voltaje;
+  note right
+    **v = raw × (3.3 / 4095)**
+    • Conversión lineal
+    • Resultado en voltios
+  end note
+  
+  :Mostrar por Serial;
+  note right
+    **Serial.printf()**
+    RAW = valor digital
+    V = voltaje calculado
+  end note
+  
+  :Esperar 200ms;
+
+repeat while (loop infinito)
+
+stop
+
+@enduml

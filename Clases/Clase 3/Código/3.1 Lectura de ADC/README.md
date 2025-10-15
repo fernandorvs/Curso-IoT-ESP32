@@ -32,7 +32,13 @@ Lectura básica del ADC (Conversor Analógico-Digital) del ESP32 con conversión
 
 ---
 
-## 📚 Clase
+## 📊 Diagrama de Flujo
+
+![Diagrama Lectura ADC](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%203/Diagramas/lectura_adc.pu)
+
+---
+
+## � Clase
 
 **Módulo:** Clase 3 - Sensores y Periféricos  
 Ver `src/main.cpp` para detalles de implementación

@@ -1,0 +1,95 @@
+@startuml fsm_cafetera
+!theme plain
+skinparam backgroundColor #Ffffff
+skinparam state {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontColor #01579B
+    FontSize 12
+}
+
+[*] --> INACTIVA : Sistema encendido
+
+state INACTIVA {
+    INACTIVA : Display "OFF"
+    INACTIVA : Resistencia OFF
+}
+
+state VERIFICANDO {
+    VERIFICANDO : Chequeo agua
+    VERIFICANDO : Chequeo granos
+}
+
+state CALENTANDO {
+    CALENTANDO : Resistencia ON
+    CALENTANDO : Sensor temperatura
+}
+
+state MOLIENDO {
+    MOLIENDO : Motor molinillo ON
+    MOLIENDO : Temporizador activo
+}
+
+state PREPARANDO {
+    PREPARANDO : Bomba agua ON
+    PREPARANDO : Válvula café abierta
+}
+
+state LISTA {
+    LISTA : Display "READY"
+    LISTA : Buzzer 2 beeps
+}
+
+state LIMPIEZA {
+    LIMPIEZA : Ciclo agua caliente
+    LIMPIEZA : Sin café
+}
+
+state ERROR {
+    ERROR : Sistema detenido
+    ERROR : Display código error
+}
+
+INACTIVA --> VERIFICANDO : Botón START
+
+VERIFICANDO --> CALENTANDO : Niveles OK
+VERIFICANDO --> ERROR : Sin agua/granos
+
+CALENTANDO --> MOLIENDO : Temperatura OK
+CALENTANDO --> ERROR : Timeout calentamiento
+
+MOLIENDO --> PREPARANDO : Molienda completa
+MOLIENDO --> ERROR : Atasco molinillo
+
+PREPARANDO --> LISTA : Café preparado
+PREPARANDO --> ERROR : Falla bomba
+
+LISTA --> INACTIVA : Timeout 5min
+LISTA --> LIMPIEZA : Botón CLEAN
+
+LIMPIEZA --> INACTIVA : Ciclo completo
+
+ERROR --> INACTIVA : Reset
+
+note right of VERIFICANDO
+  **Sensores:**
+  - Nivel agua
+  - Nivel granos
+  - Taza presente
+end note
+
+note left of CALENTANDO
+  **Control temperatura:**
+  - Resistencia + PID
+  - Sensor temperatura
+  - Rango 85-95°C
+end note
+
+note bottom
+  **Proceso automatizado:**
+  • Verificación previa de insumos
+  • Control preciso de temperatura
+  • Secuencia temporal controlada
+end note
+
+@enduml

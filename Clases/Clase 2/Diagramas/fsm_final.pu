@@ -1,0 +1,37 @@
+@startuml fsm_final
+!theme plain
+skinparam backgroundColor #Ffffff
+skinparam state {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontColor #01579B
+    FontSize 12
+}
+
+[*] --> OFF : Inicialización
+
+state OFF {
+    OFF : digitalWrite(2, LOW)
+    OFF : LED apagado
+}
+
+state ON {
+    ON : digitalWrite(2, HIGH)
+    ON : LED encendido
+}
+
+state BLINK {
+    BLINK : if(millis() - timer > 500)
+    BLINK : ledState = !ledState
+    BLINK : digitalWrite(2, ledState)
+}
+
+OFF --> ON : if(boton)
+ON --> BLINK : if(boton)\ntimer = millis()
+BLINK --> OFF : if(boton)
+
+OFF --> OFF : !boton
+ON --> ON : !boton
+BLINK --> BLINK : !boton\n(continúa toggle)
+
+@enduml

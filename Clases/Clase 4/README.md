@@ -223,78 +223,18 @@ Al finalizar esta clase, los estudiantes serán capaces de:
 ## 🚀 Cómo Ejecutar los Proyectos
 
 ### Requisitos Previos
-```bash
+- PlatformIO IDE instalado en VS Code
+- ESP32 con WiFi
+- Router WiFi con acceso
+- Navegador web moderno
 
-title Arquitectura Sistema IoT ESP32
+### Arquitectura del Sistema
 
-package "ESP32 Device" {
-    [Sensors] --> [MCU Core]
-    [Actuators] <-- [MCU Core]
-    [MCU Core] --> [WiFi Module]
-    [MCU Core] --> [Web Server]
-    [Web Server] --> [LittleFS]
-    [Web Server] --> [REST API]
-}
-
-package "Network" {
-    [WiFi Router]
-    [Internet]
-}
-
-package "Client Devices" {
-    [Web Browser]
-    [Mobile App]
-    [Other IoT Devices]
-}
-
-[WiFi Module] <--> [WiFi Router]
-[WiFi Router] <--> [Internet]
-[REST API] <--> [Web Browser] : HTTP/JSON
-[Web Browser] <--> [Internet]
-
-note right of [REST API]
-    GET /api/sensors
-    POST /api/actuators
-    WebSocket future
-end note
-
-@enduml
-```
+![Arquitectura Sistema IoT](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/servidor_web_iot_arquitectura.pu)
 
 ### Flujo de Comunicación Web
-```plantuml
-@startuml
-!theme plain
 
-title Flujo de Comunicación Cliente-Servidor IoT
-
-actor User
-participant "Web Browser" as Browser
-participant "ESP32 Server" as ESP32
-participant "Sensors/Actuators" as Hardware
-
-User -> Browser: Abre dashboard\nhttp://192.168.1.100
-Browser -> ESP32: GET /
-ESP32 -> ESP32: Servir index.html\ndesde LittleFS
-ESP32 -> Browser: HTML + CSS + JS
-
-loop Cada 3 segundos
-    Browser -> ESP32: GET /api/sensors
-    ESP32 -> Hardware: Leer sensores
-    Hardware -> ESP32: Datos actuales
-    ESP32 -> Browser: JSON con datos
-    Browser -> Browser: Actualizar gráficos
-end
-
-User -> Browser: Click botón LED
-Browser -> ESP32: POST /api/led\n{action: "toggle"}
-ESP32 -> Hardware: Cambiar estado LED
-Hardware -> ESP32: Confirmación
-ESP32 -> Browser: {status: "OK"}
-Browser -> Browser: Actualizar UI
-
-@enduml
-```
+![Flujo Comunicación](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/flujo_comunicacion_iot.pu)
 
 ## 🛠️ Herramientas y Librerías
 
@@ -378,7 +318,24 @@ Al completar esta clase, verifica que puedes:
 - [ ] Crear interfaz web responsive que funcione en móvil
 - [ ] Implementar actualización automática de datos
 - [ ] Manejar errores de conectividad gracefully
-- [ ] Documentar APIs y proporcionar ejemplos de uso
+- Documentar APIs y proporcionar ejemplos de uso
+
+## 📊 Diagramas de Flujo
+
+### 4.1 - WiFi Básico
+![Diagrama WiFi Básico](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/wifi_basico.pu)
+
+### 4.2 - Servidor Básico
+![Diagrama Servidor Básico](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/servidor_basico.pu)
+
+### 4.3 - Control LED Remoto
+![Diagrama Control LED](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/control_led_remoto.pu)
+
+### 4.4 - Lectura de Sensores
+![Diagrama Lectura Sensores](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/lectura_sensores.pu)
+
+### 4.5 - Dashboard Completo
+![Diagrama Dashboard](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/dashboard_completo.pu)
 
 ## 🚀 Próximos Pasos
 

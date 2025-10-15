@@ -404,12 +404,12 @@ void setup() {
     Serial.println("SSID: " + String(ssid));
     Serial.println("Sistema de archivos: LittleFS " + String(LittleFS.totalBytes()) + " bytes");
     Serial.println("Funcionalidades:");
-    Serial.println("  📁 Archivos estáticos desde LittleFS");
-    Serial.println("  🌡️ Sensor temperatura ESP32");
-    Serial.println("  💡 Control LED con PWM");
-    Serial.println("  � Display OLED SSD1306");
-    Serial.println("  �📡 API REST completa");
-    Serial.println("  🔄 Dashboard interactivo");
+    Serial.println("  Archivos estáticos desde LittleFS");
+    Serial.println("  Sensor temperatura ESP32");
+    Serial.println("  Control LED con PWM");
+    Serial.println("  Display OLED SSD1306");
+    Serial.println("  API REST completa");
+    Serial.println("  Dashboard interactivo");
     Serial.println(String('=', 50));
     Serial.println();
 

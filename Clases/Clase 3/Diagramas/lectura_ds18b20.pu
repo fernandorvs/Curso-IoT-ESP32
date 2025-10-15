@@ -1,0 +1,55 @@
+@startuml lectura_ds18b20
+!theme plain
+
+start
+
+:Inicializar Serial 115200;
+
+:Crear objeto OneWire;
+note right
+  **OneWire oneWire(4)**
+  Protocolo 1-Wire en GPIO4
+end note
+
+:Crear objeto DallasTemperature;
+note right
+  **DallasTemperature ds(&oneWire)**
+  Gestiona sensores DS18B20
+end note
+
+:Inicializar sensores;
+note right
+  **ds.begin()**
+  Detecta sensores en bus
+end note
+
+repeat
+  :Solicitar conversión;
+  note right
+    **ds.requestTemperatures()**
+    • Inicia medición
+    • Demora ~750ms (12 bits)
+    • Espera automática
+  end note
+  
+  :Leer temperatura;
+  note right
+    **t = ds.getTempCByIndex(0)**
+    • Index 0: primer sensor
+    • Salida directa en °C
+    • Precisión ±0.5°C
+  end note
+  
+  :Mostrar temperatura;
+  note right
+    **Serial.printf("DS18B20: %.2f °C")**
+    Salida digital, sin ruido
+  end note
+  
+  :Esperar 1000ms;
+
+repeat while (loop infinito)
+
+stop
+
+@enduml

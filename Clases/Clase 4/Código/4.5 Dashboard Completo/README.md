@@ -36,7 +36,13 @@ Dashboard web profesional con archivos separados (HTML/CSS/JS) servidos desde SP
 
 ---
 
-## 📚 Clase
+## � Diagrama de Flujo
+
+![Diagrama Dashboard Completo](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/dashboard_completo.pu)
+
+---
+
+## �📚 Clase
 
 **Módulo:** Clase 4 - Conectividad y Protocolos  
 Ver `src/main.cpp` para detalles de implementación

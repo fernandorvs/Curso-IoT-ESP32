@@ -1,0 +1,24 @@
+@startuml
+start
+
+:Configurar pin botón como INPUT_PULLUP;
+:Configurar pin LED como OUTPUT;
+
+repeat
+  :Leer botón;
+  if (¿Botón en LOW?) then (Sí)
+    :Esperar 50 ms;
+    :Leer botón;
+    if (¿Sigue en LOW?) then (Sí)
+      :Invertir estado del LED;
+      repeat
+        :Leer botón;
+      repeat while (¿Botón en LOW?) is (Sí)
+    else (No)
+      --> repeat
+    endif
+  else (No)
+    --> repeat
+  endif
+repeat while (loop)
+@enduml

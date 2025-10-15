@@ -1,0 +1,60 @@
+@startuml oled_basico
+!theme plain
+
+start
+
+:Inicializar I2C;
+note right
+  **Wire.begin(SDA, SCL)**
+  • ESP32: SDA = GPIO33, SCL = GPIO25
+  • ESP32-C3: SDA = GPIO20, SCL = GPIO21
+end note
+
+:Crear objeto U8G2;
+note right
+  **U8G2_SSD1306_128X64_NONAME_F_HW_I2C**
+  • Controlador: SSD1306
+  • Resolución: 128×64
+  • Modo: Full Buffer (1KB RAM)
+end note
+
+:Inicializar display;
+note right
+  **u8g2.begin()**
+  Configura pantalla OLED
+end note
+
+repeat
+  :Limpiar buffer;
+  note right
+    **u8g2.clearBuffer()**
+    Borra contenido RAM
+  end note
+  
+  :Seleccionar fuente;
+  note right
+    **u8g2.setFont(u8g2_font_helvB14_tf)**
+    Fuente Helvetica Bold 14px
+  end note
+  
+  :Dibujar texto en buffer;
+  note right
+    **u8g2.drawStr(35, 35, "UNSE")**
+    Posición (x=35, y=35)
+    Solo modifica RAM
+  end note
+  
+  :Enviar buffer a pantalla;
+  note right
+    **u8g2.sendBuffer()**
+    Transfiere RAM → Display
+    Actualización visible
+  end note
+  
+  :Esperar 500ms;
+
+repeat while (loop infinito)
+
+stop
+
+@enduml

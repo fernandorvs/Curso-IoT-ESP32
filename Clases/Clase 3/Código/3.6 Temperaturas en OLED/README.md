@@ -33,7 +33,13 @@ Sistema integrado que muestra lecturas simultáneas de dos sensores de temperatu
 
 ---
 
-## 📚 Clase
+## 📊 Diagrama de Flujo
+
+![Diagrama Sistema Integrado](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%203/Diagramas/temperaturas_oled.pu)
+
+---
+
+## � Clase
 
 **Módulo:** Clase 3 - Sensores y Periféricos  
 Ver `src/main.cpp` para detalles de implementación

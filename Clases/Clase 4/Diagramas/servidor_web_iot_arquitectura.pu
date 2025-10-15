@@ -1,0 +1,68 @@
+@startuml servidor_web_iot_arquitectura
+
+!theme cerulean-outline
+title Arquitectura del Servidor Web IoT - ESP32
+
+' Definir componentes
+package "Cliente Web" {
+    [Navegador] as browser
+    [Dashboard HTML] as dashboard
+    [JavaScript] as js
+    [CSS Styles] as css
+}
+
+package "Red WiFi" {
+    [Router WiFi] as router
+    cloud "Internet" as internet
+}
+
+package "ESP32 Sistema" {
+    component "WebServer" as webserver {
+        [HTTP Handler] as http
+        [API REST] as api
+        [File System] as fs
+    }
+    
+    component "Hardware" {
+        [GPIO LED] as led
+        [Sensores] as sensors
+        [PWM Controller] as pwm
+    }
+    
+    component "Sistema" {
+        [WiFi Driver] as wifi
+        [LittleFS] as littlefs
+        [JSON Parser] as json
+    }
+}
+
+' Conexiones principales
+browser --> router : HTTP Requests
+router --> wifi : WiFi Protocol
+wifi --> webserver : Local Network
+
+' Flujo de datos
+dashboard --> js : User Interactions
+js --> api : AJAX/Fetch
+api --> sensors : Read Data
+api --> led : Control Output
+api --> json : Format Response
+
+' Archivos estáticos
+fs --> littlefs : Load Files
+littlefs --> dashboard : Serve HTML
+littlefs --> css : Serve CSS
+littlefs --> js : Serve JavaScript
+
+' Control de hardware
+webserver --> pwm : PWM Control
+pwm --> led : Brightness
+webserver --> sensors : Temperature Read
+
+' Notas explicativas
+note top of browser : "Acceso desde cualquier\ndispositivo en la red"
+note right of api : "Endpoints:\n/api/sensors\n/api/led"
+note bottom of sensors : "Temperatura interna\nESP32"
+note left of led : "Control PWM\ncon brillo variable"
+
+@enduml

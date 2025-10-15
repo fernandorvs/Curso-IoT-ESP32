@@ -1,0 +1,89 @@
+@startuml fsm_lavarropa
+!theme plain
+skinparam backgroundColor #Ffffff
+skinparam state {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontColor #01579B
+    FontSize 12
+}
+
+[*] --> INACTIVO : Sistema encendido
+
+state INACTIVO {
+    INACTIVO : Esperando usuario
+    INACTIVO : Puerta desbloqueada
+}
+
+state LLENADO {
+    LLENADO : Válvula agua ON
+    LLENADO : Sensor nivel activo
+}
+
+state LAVADO {
+    LAVADO : Motor baja velocidad
+    LAVADO : Temporizador activo
+}
+
+state ENJUAGUE {
+    ENJUAGUE : Renovación de agua
+    ENJUAGUE : Motor suave
+}
+
+state CENTRIFUGADO {
+    CENTRIFUGADO : Motor alta velocidad
+    CENTRIFUGADO : Bomba desagüe ON
+}
+
+state DESAGÜE {
+    DESAGÜE : Bomba desagüe ON
+    DESAGÜE : Motor OFF
+}
+
+state FINALIZADO {
+    FINALIZADO : Ciclo completo
+    FINALIZADO : Puerta desbloqueada
+}
+
+state ERROR {
+    ERROR : Sistema detenido
+    ERROR : Display código error
+}
+
+INACTIVO --> LLENADO : START + Puerta cerrada
+LLENADO --> LAVADO : Nivel OK
+LAVADO --> DESAGÜE : Tiempo completo
+DESAGÜE --> ENJUAGUE : Agua drenada
+ENJUAGUE --> CENTRIFUGADO : Enjuague OK
+CENTRIFUGADO --> FINALIZADO : Secado completo
+
+LLENADO --> ERROR : Timeout llenado
+LAVADO --> ERROR : Puerta abierta
+DESAGÜE --> ERROR : Timeout desagüe
+ENJUAGUE --> ERROR : Falla sensor
+CENTRIFUGADO --> ERROR : Vibración excesiva
+
+FINALIZADO --> INACTIVO : Puerta abierta
+ERROR --> INACTIVO : Reset
+
+note right of LLENADO
+  **Sensores:**
+  - Nivel agua
+  - Puerta cerrada
+end note
+
+note left of LAVADO
+  **Actuadores:**
+  - Motor con PWM
+  - Válvulas
+  - Bomba desagüe
+end note
+
+note bottom
+  **Sistema complejo con:**
+  • Múltiples sensores y actuadores
+  • Manejo de errores y timeouts
+  • Interfaz de usuario
+end note
+
+@enduml

@@ -1,0 +1,126 @@
+@startuml estructura_proyecto_clase4
+
+!theme carbon-gray
+title Estructura del Proyecto - Clase 4 Servidor Web IoT
+
+package "Clase 4/" {
+    
+    folder "README.md" as readme {
+        README.md : • Objetivos de aprendizaje
+        README.md : • Teoría cubierta (WiFi, WebServer, API REST)
+        README.md : • Ejercicios progresivos explicados
+        README.md : • Instrucciones detalladas
+        README.md : • Solución de problemas
+    }
+    
+    package "Código/" {
+        
+        package "4.1 WiFi Básico/" {
+            folder "src/main.cpp" as wifi_main
+            folder "platformio.ini" as wifi_ini
+            
+            wifi_main : • Conexión WiFi fundamental
+            wifi_main : • Monitoreo de estado
+            wifi_main : • Información de red
+            wifi_main : • Reconexión automática
+        }
+        
+        package "4.2 Servidor Básico/" {
+            folder "src/main.cpp" as server_main
+            folder "platformio.ini" as server_ini
+            
+            server_main : • WebServer HTTP
+            server_main : • Página HTML dinámica
+            server_main : • APIs básicas JSON
+            server_main : • Manejo de errores 404
+        }
+        
+        package "4.3 Control LED Remoto/" {
+            folder "src/main.cpp" as led_main
+            folder "platformio.ini" as led_ini
+            
+            led_main : • Control remoto de LED
+            led_main : • API REST completa
+            led_main : • PWM con control de brillo
+            led_main : • Interfaz web interactiva
+        }
+        
+        package "4.4 Lectura de Sensores/" {
+            folder "src/main.cpp" as sensors_main
+            folder "platformio.ini" as sensors_ini
+            
+            sensors_main : • Dashboard de sensores
+            sensors_main : • Temperatura interna ESP32
+            sensors_main : • ADC y voltaje analógico
+            sensors_main : • Historial de lecturas
+        }
+        
+        package "4.5 Dashboard Completo/" {
+            folder "src/main.cpp" as final_main
+            folder "platformio.ini" as final_ini
+            folder "data/" as final_data {
+                folder "index.html" as final_html
+                folder "style.css" as final_css
+                folder "script.js" as final_js
+            }
+            
+            final_main : • Sistema IoT completo
+            final_main : • LittleFS para archivos
+            final_main : • Todas las funcionalidades
+            final_html : • Interfaz responsive
+            final_css : • Estilos modernos
+            final_js : • JavaScript asíncrono
+        }
+        
+        folder "web-dashboard-mejorado.html" as web_improved
+        web_improved : • Versión mejorada del dashboard
+        web_improved : • CSS avanzado y animaciones
+        web_improved : • JavaScript optimizado
+    }
+    
+    package "Docs/" {
+        folder "Curso_IoT_ESP32_UNSE_Clase_4.pdf" as pdf_doc
+        pdf_doc : • Manual completo de la clase
+        pdf_doc : • Explicaciones teóricas detalladas
+        pdf_doc : • Diagramas y esquemas
+        pdf_doc : • Ejercicios paso a paso
+    }
+    
+    package "Diagramas/" {
+        folder "servidor_web_iot_arquitectura.pu" as arch_diagram
+        folder "flujo_comunicacion_iot.pu" as flow_diagram  
+        folder "api_rest_endpoints.pu" as api_diagram
+        folder "wifi_conexion_estados.pu" as wifi_diagram
+        folder "estructura_proyecto_clase4.pu" as project_diagram
+        
+        arch_diagram : • Arquitectura del sistema IoT
+        flow_diagram : • Flujo de comunicación completo
+        api_diagram : • Endpoints REST detallados
+        wifi_diagram : • Estados de conexión WiFi
+        project_diagram : • Este diagrama
+    }
+}
+
+' Progresión de ejercicios
+wifi_main --> server_main : Evolución
+server_main --> led_main : + Control Hardware
+led_main --> sensors_main : + Monitoreo
+sensors_main --> final_main : = Sistema Completo
+
+' Archivos de soporte
+final_data --> final_main : LittleFS Upload
+arch_diagram --> readme : Documentación
+pdf_doc --> readme : Manual completo
+
+' Notas explicativas
+note top of wifi_main : "Fundamentos:\nConectividad básica"
+
+note right of server_main : "Servidor web:\nPáginas dinámicas\nAPIs básicas"
+
+note bottom of led_main : "Control IoT:\nActuadores remotos\nInterfaz interactiva"
+
+note left of sensors_main : "Monitoreo:\nDashboard completo\nDatos en tiempo real"
+
+note top of final_main : "PROYECTO FINAL:\nSistema IoT profesional\nTodas las funcionalidades"
+
+@enduml

@@ -1,0 +1,99 @@
+@startuml fsm_estructura_general
+!theme plain
+skinparam backgroundColor #F8F9FA
+skinparam state {
+    BackgroundColor #E8F5E8
+    BorderColor #2E7D32
+    FontColor #2E7D32
+    FontSize 11
+}
+
+title Estructura General de FSM para Sistemas Embebidos
+
+state "INICIALIZACIÓN" as INIT {
+    INIT : Configuración inicial
+    INIT : Configurar I/O
+    INIT : Variables globales
+    INIT : Estado inicial
+}
+
+state "LECTURA DE ENTRADAS" as INPUT {
+    INPUT : Leer entradas digitales
+    INPUT : Leer entradas analógicas
+    INPUT : Sensores
+    INPUT : Comunicaciones
+}
+
+state "PROCESAMIENTO FSM" as PROCESS {
+    PROCESS : switch(estado_actual)
+    PROCESS : Lógica de estados
+    PROCESS : Condiciones de transición
+    PROCESS : Acciones por estado
+}
+
+state "ACTUALIZACIÓN SALIDAS" as OUTPUT {
+    OUTPUT : Escribir salidas digitales
+    OUTPUT : Escribir salidas PWM
+    OUTPUT : Actuadores
+    OUTPUT : Comunicaciones
+}
+
+state "TEMPORIZACIÓN" as TIMING {
+    TIMING : Temporizadores del sistema
+    TIMING : Delays no bloqueantes
+    TIMING : Contadores de tiempo
+    TIMING : Timeouts
+}
+
+[*] --> INIT : Arranque del sistema
+
+INIT --> INPUT : Configuración completa
+
+INPUT --> PROCESS : Datos leídos
+PROCESS --> OUTPUT : Estado actualizado
+OUTPUT --> TIMING : Salidas aplicadas
+TIMING --> INPUT : Ciclo continuo
+
+note top of INIT
+  **Una sola vez**
+  Al inicio del programa
+end note
+
+note right of INPUT
+  **Cada ciclo**
+  - No bloqueante
+  - Rápida ejecución
+  - Debounce si necesario
+end note
+
+note right of PROCESS
+  **Máquina de Estados**
+  ```cpp
+  switch(estado) {
+    case ESTADO_1:
+      // lógica
+      if(condicion) 
+        estado = ESTADO_2;
+      break;
+    case ESTADO_2:
+      // lógica
+      break;
+  }
+  ```
+end note
+
+note right of OUTPUT
+  **Actualizaciones**
+  - Solo cuando cambia
+  - Evitar escrituras innecesarias
+  - Optimizar rendimiento
+end note
+
+note bottom of TIMING
+  **Temporización Crítica**
+  - Usar temporizadores no bloqueantes
+  - Permite multitarea
+  - No bloquea el procesamiento
+end note
+
+@enduml

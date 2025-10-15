@@ -1,0 +1,57 @@
+@startuml fsm_led_control
+!theme plain
+skinparam backgroundColor #Ffffff
+skinparam state {
+    BackgroundColor #E1F5FE
+    BorderColor #01579B
+    FontColor #01579B
+    FontSize 12
+}
+
+[*] --> APAGADO : Reset/Inicio
+
+state APAGADO {
+    APAGADO : LED = LOW
+    APAGADO : Esperando entrada
+}
+
+state ENCENDIDO {
+    ENCENDIDO : LED = HIGH
+    ENCENDIDO : Luz constante
+}
+
+state PARPADEANDO {
+    PARPADEANDO : LED Toggle cada 500ms
+    PARPADEANDO : Temporización no bloqueante
+}
+
+APAGADO --> ENCENDIDO : Botón presionado\n(1 vez)
+ENCENDIDO --> PARPADEANDO : Botón presionado\n(2da vez)
+PARPADEANDO --> APAGADO : Botón presionado\n(3ra vez)
+
+APAGADO --> APAGADO : Mantener estado\nsin entrada
+ENCENDIDO --> ENCENDIDO : Mantener estado\nsin nueva entrada
+PARPADEANDO --> PARPADEANDO : Continuar ciclo\nsi no hay entrada
+
+note right of APAGADO
+  **Estado Inicial**
+  - Pin LED = LOW
+  - Consumo mínimo
+  - Espera eventos
+end note
+
+note right of ENCENDIDO
+  **Estado Simple**
+  - Pin LED = HIGH
+  - Luz fija
+  - Sin temporización
+end note
+
+note right of PARPADEANDO
+  **Estado Temporizado**
+  - Usa millis() no bloqueante
+  - Intervalo configurable
+  - Toggle automático
+end note
+
+@enduml

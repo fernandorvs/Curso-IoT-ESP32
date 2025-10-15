@@ -1,0 +1,31 @@
+@startuml blink_no_bloqueante
+!theme plain
+title Diagrama de Flujo - Blink No Bloqueante
+
+start
+
+:Inicializar variables;
+
+:Configurar pin LED como salida;
+
+repeat
+  :Obtener tiempo actual (millis);
+  
+  if (Tiempo transcurrido >= 500ms?) then (SI)
+    :Actualizar lastBlink = ahora;
+    
+    :Alternar estado del LED;
+    
+    :Escribir nuevo estado al pin;
+    
+  else (NO)
+    :Continuar sin cambios;
+  endif
+  
+  :Ejecutar otras tareas;
+
+repeat while (loop infinito)
+
+stop
+
+@enduml

@@ -1,0 +1,72 @@
+@startuml flujo_comunicacion_iot
+
+!theme aws-orange
+title Flujo de Comunicación ESP32 ↔ Dashboard Web
+
+actor "Usuario" as user
+participant "Navegador" as browser
+participant "Router WiFi" as router
+participant "ESP32 WebServer" as esp32
+participant "Hardware" as hw
+
+== Inicialización ==
+esp32 -> router : Conectar WiFi
+esp32 <-- router : Asignar IP (ej: 192.168.1.100)
+esp32 -> esp32 : Iniciar servidor HTTP puerto 80
+esp32 -> hw : Configurar GPIO y PWM
+
+== Acceso Inicial ==
+user -> browser : Abrir http://192.168.1.100
+browser -> router : HTTP GET /
+router -> esp32 : Forward request
+esp32 -> esp32 : Cargar index.html desde LittleFS
+esp32 --> router : HTML + CSS + JavaScript
+router --> browser : Dashboard completo
+browser -> user : Mostrar interfaz
+
+== Actualización de Sensores (cada 3 segundos) ==
+browser -> router : GET /api/sensors
+router -> esp32 : Forward API request
+esp32 -> hw : Leer temperatura interna
+hw --> esp32 : Datos del sensor
+esp32 -> esp32 : Formatear JSON response
+esp32 --> router : {"temperature": 28.5, "uptime": 12345}
+router --> browser : JSON data
+browser -> browser : Actualizar interfaz
+browser -> user : Mostrar nueva temperatura
+
+== Control de LED ==
+user -> browser : Click botón "Encender/Apagar"
+browser -> router : POST /api/led action=toggle
+router -> esp32 : Forward control request
+esp32 -> esp32 : Cambiar estado LED
+esp32 -> hw : Aplicar PWM al GPIO
+hw --> esp32 : Confirmar cambio
+esp32 --> router : {"success": true, "state": true}
+router --> browser : Confirmación
+browser -> browser : Actualizar estado visual
+browser -> user : LED encendido
+
+== Control de Brillo ==
+user -> browser : Mover slider a 75%
+browser -> router : POST /api/led action=brightness&value=75
+router -> esp32 : Forward brightness request
+esp32 -> esp32 : Calcular PWM logarítmico
+esp32 -> hw : Aplicar nuevo PWM
+hw --> esp32 : Confirmar cambio
+esp32 --> router : {"success": true, "brightness": 75}
+router --> browser : Confirmación
+browser -> browser : Actualizar slider
+browser -> user : LED más brillante
+
+== Reconexión Automática ==
+note over esp32 : Si WiFi se desconecta
+esp32 -> router : Intentar reconexión
+alt Reconexión exitosa
+    esp32 <-- router : IP restaurada
+    esp32 -> esp32 : Continuar servidor
+else Reconexión falla
+    esp32 -> esp32 : Log error, reintentar
+end
+
+@enduml

@@ -1,0 +1,84 @@
+@startuml wifi_conexion_estados
+
+!theme materia-outline
+title Estados de Conexión WiFi - ESP32
+
+[*] --> Inicialización
+
+state Inicialización {
+    Inicialización : Configurar WiFi en modo STA
+    Inicialización : WiFi.begin(ssid, password)
+    Inicialización : Establecer timeouts
+}
+
+Inicialización --> Conectando : WiFi.begin()
+
+state Conectando {
+    Conectando : Buscar red SSID
+    Conectando : Autenticación WPA2
+    Conectando : Obtener IP por DHCP
+    Conectando : Timeout: 30 segundos
+}
+
+Conectando --> Conectado : WL_CONNECTED
+Conectando --> Error_Conexion : Timeout o falla
+
+state Conectado {
+    Conectado : IP asignada
+    Conectado : Servidor HTTP activo
+    Conectado : Monitoreo de calidad señal
+}
+
+state Error_Conexion {
+    Error_Conexion : WL_NO_SSID_AVAIL
+    Error_Conexion : WL_CONNECT_FAILED
+    Error_Conexion : WL_CONNECTION_LOST
+}
+
+Error_Conexion --> Reintentando : Después de 5s
+
+state Reintentando {
+    Reintentando : WiFi.reconnect()
+    Reintentando : Intentos máximos: 10
+    Reintentando : Delay entre intentos: 1s
+}
+
+Reintentando --> Conectado : Reconexión exitosa
+Reintentando --> Desconectado : Máximos intentos
+
+state Desconectado {
+    Desconectado : Servidor web inactivo
+    Desconectado : Log de error
+    Desconectado : Modo de recuperación
+}
+
+Desconectado --> Reintentando : Cada 30s
+
+' Verificación periódica
+Conectado --> Verificando : Cada 10s
+
+state Verificando {
+    Verificando : WiFi.status() == WL_CONNECTED
+    Verificando : Medir RSSI
+    Verificando : Verificar gateway
+}
+
+Verificando --> Conectado : Estado OK
+Verificando --> Conexion_Perdida : Desconectado
+
+state Conexion_Perdida {
+    Conexion_Perdida : WL_CONNECTION_LOST
+    Conexion_Perdida : Servidor web pausado
+    Conexion_Perdida : Activar reconexión
+}
+
+Conexion_Perdida --> Reintentando : Inmediato
+
+' Notas explicativas
+note top of Conectando : "SSID debe ser 2.4GHz\nno 5GHz para ESP32"
+
+note right of Conectado : "Calidad de señal:\n> -50 dBm: Excelente\n> -60 dBm: Muy buena\n> -70 dBm: Buena\n> -80 dBm: Regular\n< -80 dBm: Débil"
+
+note bottom of Verificando : "Monitoreo automático\npara detectar\ndesconexiones"
+
+@enduml

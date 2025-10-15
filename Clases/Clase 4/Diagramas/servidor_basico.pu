@@ -1,0 +1,47 @@
+@startuml servidor_basico
+!theme plain
+
+start
+
+:Inicializar Serial;
+
+:Conectar WiFi;
+note right
+  WiFi.begin(ssid, password)
+end note
+
+:Esperar conexión exitosa;
+
+:Crear servidor en puerto 80;
+note right
+  WebServer server(80)
+end note
+
+:Registrar ruta "/";
+note right
+  server.on("/", handleRoot)
+end note
+
+:Iniciar servidor;
+note right
+  server.begin()
+end note
+
+repeat
+  :Procesar peticiones HTTP;
+  note right
+    server.handleClient()
+  end note
+  
+  if (Cada 3 segundos?) then (SI)
+    :Mostrar estado WiFi;
+    note right
+      IP, RSSI
+    end note
+  endif
+
+repeat while (continúa)
+
+stop
+
+@enduml

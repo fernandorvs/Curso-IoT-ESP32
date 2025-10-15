@@ -1,0 +1,54 @@
+@startuml lectura_sensores
+!theme plain
+
+start
+
+:Inicializar Serial, WiFi, Sensores;
+
+:Inicializar DS18B20;
+note right
+  sensorDS.begin()
+end note
+
+:Conectar WiFi;
+
+:Crear servidor;
+
+:Registrar rutas API;
+note right
+  "/" - Página principal
+  "/api/ntc" - Temp NTC
+  "/api/ds18b20" - Temp DS18B20
+  "/api/led" - Control LED
+end note
+
+:Iniciar servidor;
+
+repeat
+  if (Cada 2 segundos?) then (SI)
+    partition "Leer Sensores" {
+      :Leer ADC → NTC;
+      note right
+        Calcular temperatura
+        con Steinhart-Hart
+      end note
+      
+      :Leer DS18B20;
+      note right
+        requestTemperatures()
+        getTempCByIndex(0)
+      end note
+    }
+  endif
+  
+  :Procesar peticiones HTTP;
+  note right
+    Servir datos JSON
+    Control LED
+  end note
+
+repeat while (continúa)
+
+stop
+
+@enduml

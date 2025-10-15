@@ -33,7 +33,13 @@ Medición de temperatura usando termistor NTC 10kΩ en configuración de divisor
 
 ---
 
-## 📚 Clase
+## 📊 Diagrama de Flujo
+
+![Diagrama Lectura NTC](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%203/Diagramas/lectura_ntc.pu)
+
+---
+
+## � Clase
 
 **Módulo:** Clase 3 - Sensores y Periféricos  
 Ver `src/main.cpp` para detalles de implementación

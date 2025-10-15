@@ -1,0 +1,39 @@
+@startuml no_bloqueante
+!theme plain
+
+start
+
+repeat
+  :tickBoton();
+  note right
+    Lee entradas de botones
+    Manejo de pulsadores
+    sin bloqueos
+  end note
+  
+  :tickBlink();
+  note right
+    Control de LEDs
+    con temporizadores
+    basados en millis()
+  end note
+  
+  :tickUART();
+  note right
+    Comunicaciones serie
+    Envío/recepción de datos
+    sin delay()
+  end note
+  
+  :Otras tareas no bloqueantes;
+  note right
+    Sensores, WiFi, Bluetooth
+    Actualizaciones de estado
+    Procesamiento de datos
+  end note
+
+repeat while (loop infinito)
+
+stop
+
+@enduml
