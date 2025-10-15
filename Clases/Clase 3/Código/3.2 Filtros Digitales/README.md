@@ -32,13 +32,7 @@ Implementación de filtro EMA (Exponential Moving Average) para suavizar lectura
 
 ---
 
-## 📊 Diagrama de Flujo
-
-![Diagrama Filtros Digitales](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%203/Diagramas/filtros_digitales.pu)
-
----
-
-## � Clase
+## 📚 Clase
 
 **Módulo:** Clase 3 - Sensores y Periféricos  
 Ver `src/main.cpp` para detalles de implementación

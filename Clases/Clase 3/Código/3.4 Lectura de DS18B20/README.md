@@ -32,13 +32,7 @@ Lectura de temperatura usando sensor digital DS18B20 con protocolo 1-Wire. Senso
 
 ---
 
-## 📊 Diagrama de Flujo
-
-![Diagrama DS18B20](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%203/Diagramas/lectura_ds18b20.pu)
-
----
-
-## � Clase
+## 📚 Clase
 
 **Módulo:** Clase 3 - Sensores y Periféricos  
 Ver `src/main.cpp` para detalles de implementación

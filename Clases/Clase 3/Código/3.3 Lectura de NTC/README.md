@@ -1,8 +1,8 @@
-# Lectura de NTC - Sensor de Temperatura
+# Lectura de DS18B20 - Sensor Digital de Temperatura
 
 ## 📖 Descripción
 
-Medición de temperatura usando termistor NTC 10kΩ en configuración de divisor de tensión. Convierte resistencia a temperatura usando ecuación Steinhart-Hart simplificada (parámetro Beta).
+Lectura de temperatura usando sensor digital DS18B20 con protocolo 1-Wire. Sensor de alta precisión (±0.5°C) con salida digital que elimina necesidad de ADC y conversiones analógicas.
 
 ---
 
@@ -10,17 +10,16 @@ Medición de temperatura usando termistor NTC 10kΩ en configuración de divisor
 
 | Componente | Pin | Notas |
 |------------|-----|-------|
-| NTC 10kΩ | GPIO 34 | Con resistencia 10kΩ |
-| LED | GPIO 2 | Indica T > 30°C |
+| DS18B20 | GPIO 4 | Protocolo 1-Wire |
 
 ---
 
 ## 💡 Características
 
-- Termistor NTC 10kΩ (Beta=3950)
-- Ecuación Steinhart-Hart simplificada
-- Control LED según temperatura
-- Salida en °C cada 500ms
+- Sensor digital de temperatura DS18B20
+- Protocolo 1-Wire (un solo pin)
+- Precisión ±0.5°C
+- Librerías OneWire y DallasTemperature
 
 ---
 
@@ -29,17 +28,11 @@ Medición de temperatura usando termistor NTC 10kΩ en configuración de divisor
 1. Conectar hardware según tabla
 2. Compilar y subir con PlatformIO
 3. Abrir Serial Monitor (115200 baudios)
-4. LED enciende si T > 30°C
+4. Observar temperatura cada segundo
 
 ---
 
-## 📊 Diagrama de Flujo
-
-![Diagrama Lectura NTC](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%203/Diagramas/lectura_ntc.pu)
-
----
-
-## � Clase
+## 📚 Clase
 
 **Módulo:** Clase 3 - Sensores y Periféricos  
 Ver `src/main.cpp` para detalles de implementación
