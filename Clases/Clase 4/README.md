@@ -228,14 +228,6 @@ Al finalizar esta clase, los estudiantes serán capaces de:
 - Router WiFi con acceso
 - Navegador web moderno
 
-### Arquitectura del Sistema
-
-![Arquitectura Sistema IoT](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/servidor_web_iot_arquitectura.pu)
-
-### Flujo de Comunicación Web
-
-![Flujo Comunicación](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/flujo_comunicacion_iot.pu)
-
 ## 🛠️ Herramientas y Librerías
 
 ### Librerías de ESP32
@@ -254,7 +246,6 @@ Al finalizar esta clase, los estudiantes serán capaces de:
 - **Serial Monitor**: Logs del servidor
 - **Browser DevTools**: Inspector de red y DOM
 - **Postman**: Testing de APIs REST
-- **PlantUML**: Documentación de arquitectura
 
 ## 📚 Recursos de Referencia
 
@@ -319,23 +310,6 @@ Al completar esta clase, verifica que puedes:
 - [ ] Implementar actualización automática de datos
 - [ ] Manejar errores de conectividad gracefully
 - Documentar APIs y proporcionar ejemplos de uso
-
-## 📊 Diagramas de Flujo
-
-### 4.1 - WiFi Básico
-![Diagrama WiFi Básico](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/wifi_basico.pu)
-
-### 4.2 - Servidor Básico
-![Diagrama Servidor Básico](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/servidor_basico.pu)
-
-### 4.3 - Control LED Remoto
-![Diagrama Control LED](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/control_led_remoto.pu)
-
-### 4.4 - Lectura de Sensores
-![Diagrama Lectura Sensores](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/lectura_sensores.pu)
-
-### 4.5 - Dashboard Completo
-![Diagrama Dashboard](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fernandorvs/Curso-IoT-ESP32/main/Clases/Clase%204/Diagramas/dashboard_completo.pu)
 
 ## 🚀 Próximos Pasos
 
