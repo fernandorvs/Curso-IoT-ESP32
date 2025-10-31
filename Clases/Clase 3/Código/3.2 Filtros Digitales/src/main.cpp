@@ -32,7 +32,7 @@ void loop() {
     int x = analogRead(PIN_ADC);
     ema = 0.2 * x + 0.8 * ema;
     // Serial.printf("%d,%.1f", x, ema);
-    Serial.printf(">raw:%d,filtrada:%.1f", x, ema); // Teleplotter format
+    Serial.printf(">raw:%d,filtrada:%.1f", x, ema); // Serial Plotter format
     Serial.println();
     delay(100);
 }
