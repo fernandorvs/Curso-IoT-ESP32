@@ -17,7 +17,9 @@ Al finalizar esta clase serás capaz de:
 ### ADC (Conversor Analógico-Digital)
 - **Resolución**: 12 bits (0-4095) → Voltaje: 0-3.3V
 - **Conversión**: `voltaje = (valorADC / 4095.0) * 3.3V`
-- **Recomendación**: Usar ADC1 (GPIO 32-39) para proyectos IoT
+- **Atenuación**: ADC_11db para rango completo 0-3.3V
+- **Calibración**: eFuse automática o corrección manual por factor
+- **Recomendación**: Usar ADC1 para proyectos IoT (compatible con WiFi)
 
 ### Filtro EMA (Exponential Moving Average)
 - **Fórmula**: `y[n] = α × x[n] + (1-α) × y[n-1]`
@@ -26,15 +28,16 @@ Al finalizar esta clase serás capaz de:
 
 ### Sensores de Temperatura
 
-| Sensor | Tipo | Precisión | Protocolo | Costo |
-|--------|------|-----------|-----------|-------|
-| **NTC** | Analógico | ±2°C | ADC | Bajo |
-| **DS18B20** | Digital | ±0.5°C | 1-Wire | Medio |
+| Sensor | Tipo | Precisión | Protocolo | Costo | Características |
+|--------|------|-----------|-----------|-------|-----------------|
+| **NTC** | Analógico | ±2-3°C | ADC | Bajo | Respuesta rápida, requiere calibración |
+| **DS18B20** | Digital | ±0.5°C | 1-Wire | Medio | Alta precisión, modo parásito disponible |
 
 ### Display OLED (SSD1306)
-- **Protocolo**: I2C (SDA: GPIO21, SCL: GPIO22)
+- **Protocolo**: I2C (ESP32-C3: SDA=GPIO8, SCL=GPIO9)
 - **Resolución**: 128x64 píxeles
 - **Dirección**: 0x3C (típica)
+- **Biblioteca**: U8g2 con buffer completo para actualización sin parpadeo
 
 ## 💻 Proyectos Incluidos
 
@@ -53,8 +56,9 @@ Implementación de filtro EMA para suavizar señales ruidosas. Visualización co
 ### 3.3 - Lectura de NTC
 📁 `Código/3.3 Lectura de NTC/` | 📄 [README](Código/3.3%20Lectura%20de%20NTC/README.md)
 
-Sensor de temperatura analógico usando termistor NTC con ecuación Steinhart-Hart.
-- **Hardware**: NTC 10kΩ en GPIO 34 + resistencia 10kΩ, LED en GPIO 2
+Sensor de temperatura analógico usando termistor NTC con ecuación Steinhart-Hart y calibración manual del ADC.
+- **Hardware**: NTC 10kΩ en GPIO 1 + resistencia 10kΩ, LED en GPIO 2
+- **Características avanzadas**: Calibración por factor de corrección, configuración optimizada ADC (atenuación 11dB)
 
 ### 3.4 - Lectura de DS18B20
 📁 `Código/3.4 Lectura de DS18B20/` | 📄 [README](Código/3.4%20Lectura%20de%20DS18B20/README.md)
@@ -71,8 +75,9 @@ Control básico de display OLED SSD1306 con comunicación I2C.
 ### 3.6 - Temperaturas en OLED
 📁 `Código/3.6 Temperaturas en OLED/` | 📄 [README](Código/3.6%20Temperaturas%20en%20OLED/README.md)
 
-Sistema integrado: dos sensores de temperatura visualizados en OLED.
-- **Hardware**: OLED + NTC + DS18B20 (combinación de proyectos anteriores)
+Sistema integrado multi-sensor con visualización OLED: NTC y DS18B20 en modo parásito.
+- **Hardware**: OLED SSD1306 (SDA: GPIO8, SCL: GPIO9), NTC en GPIO 1, DS18B20 en GPIO 3
+- **Características avanzadas**: Calibración automática eFuse, modo parásito DS18B20, biblioteca U8g2 optimizada
 
 ## 🔧 Cómo Usar los Proyectos
 
@@ -80,14 +85,16 @@ Sistema integrado: dos sensores de temperatura visualizados en OLED.
 - **PlatformIO**: Extensión para VS Code o CLI
 - **Hardware**: ESP32 o ESP32-C3 + componentes según proyecto
 
-### Conexiones Típicas
+### Conexiones Típicas (ESP32-C3)
 ```
-GPIO 34 → Potenciómetro/NTC (entrada analógica)
-GPIO 4  → DS18B20 + pull-up 4.7kΩ
-GPIO 21 → SDA (OLED)
-GPIO 22 → SCL (OLED)
+GPIO 1  → NTC 10kΩ (entrada analógica ADC)
 GPIO 2  → LED indicador
+GPIO 3  → DS18B20 + pull-up 4.7kΩ (1-Wire, modo parásito)
+GPIO 8  → SDA (OLED I2C)
+GPIO 9  → SCL (OLED I2C)
 ```
+
+**Nota:** Para otros modelos de ESP32, consultar el README de cada proyecto para pines específicos.
 
 ### Pasos
 1. Abrir proyecto en VS Code + PlatformIO

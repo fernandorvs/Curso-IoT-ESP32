@@ -15,6 +15,8 @@
     Sistema integrado que muestra lecturas simultáneas de dos sensores
     de temperatura (NTC y DS18B20) en pantalla OLED. Combina sensores
     analógicos, digitales y display en interfaz de usuario completa.
+    Utiliza calibración automática eFuse del ADC para lecturas precisas
+    del NTC y modo parásito del DS18B20 con control manual de timing.
     
     ─────────────────────────────────────────────────────────────────────
 */
@@ -26,6 +28,7 @@
 
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <esp_adc_cal.h>
 
 #include <math.h>
 
@@ -41,17 +44,24 @@ DallasTemperature ds(&oneWire);
 
 const float VREF = 3.3, R_FIXED = 10000, R0 = 10000, PT0 = 298.15, BETA = 3950;
 
+// Para calibración eFuse
+esp_adc_cal_characteristics_t adc_chars;
+
 void setup() {
     // ESP32-C3 SDA = GPIO8, SCL = GPIO9 (mismo que 3.5 OLED)
     Wire.begin(8, 9);
     u8g2.begin();
     ds.begin();
+
+    // Calibrar ADC con valores eFuse de fábrica (compensa variaciones individuales)
+    esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_12, ADC_WIDTH_BIT_12, 1100, &adc_chars);
 }
 
 void loop() {
     // Leer NTC
     int raw = analogRead(PIN_NTC_ADC);
-    float v = raw * (VREF / 4095.0);
+    uint32_t voltage_mv = esp_adc_cal_raw_to_voltage(raw, &adc_chars);
+    float v = voltage_mv / 1000.0;
     float R = R_FIXED * v / (VREF - v);
     float Tc = (1 / (1 / PT0 + log(R / R0) / BETA)) - 273.15;
 
@@ -102,108 +112,153 @@ void loop() {
 SISTEMA MULTI-SENSOR:
 Combina múltiples fuentes de datos (NTC analógico, DS18B20 digital)
 con interfaz visual (OLED). Patrón común en instrumentación y IoT
-para monitoreo en tiempo real.
+para monitoreo en tiempo real con validación cruzada de mediciones.
 
 COMPARACIÓN DE SENSORES:
-NTC: Respuesta rápida, menor precisión, económico
-DS18B20: Mayor precisión (±0.5°C), salida digital, más costoso
+┌──────────┬──────────┬───────────┬──────────┬─────────────┐
+│ Sensor   │ Precisión│ Respuesta │ Costo    │ Interfaz    │
+├──────────┼──────────┼───────────┼──────────┼─────────────┤
+│ NTC      │ ±2-3°C   │ Rápida    │ Bajo     │ Analógico   │
+│ DS18B20  │ ±0.5°C   │ 750ms     │ Medio    │ Digital 1W  │
+└──────────┴──────────┴───────────┴──────────┴─────────────┘
 
-DISEÑO DE INTERFAZ:
-- Información clara y legible
-- Actualización periódica sin parpadeo
-- Formato consistente de datos
-- Feedback visual de estado
+VENTAJAS DE DUAL-SENSOR:
+- Validación cruzada: Detectar fallos por comparación
+- Redundancia: Continuar operación si un sensor falla
+- Características complementarias: Rapidez vs precisión
+- Calibración comparativa: Ajustar NTC usando DS18B20
 
 --- ARQUITECTURA DEL SISTEMA ---
 
 Flujo de datos:
-1. Leer sensores (analógico y digital)
-2. Procesar/convertir lecturas
-3. Actualizar buffer de display
-4. Renderizar en pantalla
-5. Esperar intervalo y repetir
+  1. Leer NTC (ADC con calibración eFuse)
+  2. Convertir voltaje → resistencia → temperatura
+  3. Solicitar conversión DS18B20 (modo parásito)
+  4. Esperar 1 segundo (conversión 12-bit)
+  5. Leer temperatura DS18B20
+  6. Actualizar buffer OLED con ambas lecturas
+  7. Renderizar en pantalla
+  8. Esperar 500ms y repetir
 
-Pines típicos:
-  NTC:     GPIO34 (ADC)
-  DS18B20: GPIO4 (1-Wire)
-  OLED:    GPIO8(SDA), GPIO9(SCL) - I2C
+Configuración de pines (ESP32-C3):
+  NTC:     GPIO 1  (ADC - Divisor de tensión)
+  DS18B20: GPIO 3  (1-Wire con modo parásito)
+  OLED:    GPIO 8 (SDA), GPIO 9 (SCL) - I2C
+
+--- CALIBRACIÓN ADC (eFuse) ---
+
+El código utiliza calibración automática para el NTC:
+
+  #include <esp_adc_cal.h>
+  esp_adc_cal_characteristics_t adc_chars;
+  
+  // Cargar valores de fábrica
+  esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_12, 
+                           ADC_WIDTH_BIT_12, 1100, &adc_chars);
+  
+  // Convertir lectura a voltaje calibrado
+  uint32_t voltage_mv = esp_adc_cal_raw_to_voltage(raw, &adc_chars);
+
+Esto mejora la precisión del NTC de ±10% a ±2-3% sin calibración manual.
+
+--- MODO PARÁSITO DS18B20 ---
+
+El DS18B20 funciona en modo parásito (alimentado desde línea de datos):
+
+  ds.setWaitForConversion(false);  // Control manual
+  ds.requestTemperatures();         // Iniciar conversión
+  delay(1000);                      // Esperar conversión
+  float temp = ds.getTempCByIndex(0);
+
+VENTAJAS modo parásito:
+- Solo 2 cables (datos + GND), sin VCC separado
+- Simplifica cableado en instalaciones
+
+CONSIDERACIONES:
+- Delay de 1000ms necesario para conversión 12-bit (750ms típico + margen)
+- Resistor pull-up 4.7kΩ necesario en línea de datos
+- Limitación de distancia (~10m máximo)
 
 --- LIBRERÍAS UTILIZADAS ---
 
-Adafruit_SSD1306:
-  display.begin(mode, address)
-  display.clearDisplay()
-  display.setCursor(x, y)
-  display.setTextSize(size)
-  display.printf(format, ...)
-  display.display()
+U8g2 (Display OLED):
+  u8g2.begin()                    // Inicializar display
+  u8g2.clearBuffer()              // Limpiar buffer interno
+  u8g2.setFont(font)              // Seleccionar fuente
+  u8g2.setCursor(x, y)            // Posicionar cursor
+  u8g2.print(value)               // Escribir texto/número
+  u8g2.drawStr(x, y, text)        // Dibujar string centrado
+  u8g2.sendBuffer()               // Enviar buffer a pantalla
 
-DallasTemperature:
-  ds.begin()
-  ds.requestTemperatures()
-  ds.getTempCByIndex(index)
+DallasTemperature (DS18B20):
+  ds.begin()                      // Inicializar sensor
+  ds.setWaitForConversion(false)  // Modo asíncrono
+  ds.requestTemperatures()        // Solicitar conversión
+  ds.getTempCByIndex(0)           // Leer temperatura
 
---- EJEMPLO PRÁCTICO ---
+--- DISEÑO DE INTERFAZ ---
 
-Display mejorado con formato:
-  display.clearDisplay();
-  display.setTextSize(1);
-  
-  display.setCursor(0, 0);
-  display.println("TEMPERATURAS");
-  display.drawLine(0, 10, 128, 10, WHITE);
-  
-  display.setCursor(0, 15);
-  display.printf("NTC:     %.1f C", ntc);
-  display.setCursor(0, 30);
-  display.printf("DS18B20: %.1f C", ds);
-  
-  display.display();
+Layout actual:
+  ┌────────────────────────────┐
+  │ NTC:     22.5 C            │  ← Fuente 7x13
+  │ DS18B20: 23.1 C            │  ← Fuente 7x13
+  │                            │
+  │         UNSE               │  ← Fuente Bold 10, centrado
+  └────────────────────────────┘
 
-Alarma visual:
-  if(temp > 30) {
-    display.setTextColor(BLACK, WHITE); // Invertir
-    display.println(" ALERTA! ");
-    display.setTextColor(WHITE); // Restaurar
+Principios aplicados:
+- Información clara y legible
+- Formato consistente (1 decimal)
+- Actualización sin parpadeo (buffer completo)
+- Identificación institucional
+
+--- MEJORAS OPCIONALES ---
+
+Indicador de diferencia entre sensores:
+  float diff = abs(Tc - Td);
+  u8g2.printf("Diff: %.1f C", diff);
+
+Alarma por discrepancia (>5°C):
+  if(diff > 5.0) {
+    u8g2.drawBox(0, 0, 128, 10);
+    u8g2.setColorIndex(0);
+    u8g2.drawStr(20, 8, "CHECK SENSORS");
   }
 
-Uptime en pantalla:
-  unsigned long secs = millis() / 1000;
-  display.printf("Uptime: %02lu:%02lu", secs/60, secs%60);
+Filtro EMA para suavizar NTC:
+  static float ema = 0;
+  if(ema == 0) ema = Tc;
+  ema = 0.2 * Tc + 0.8 * ema;
 
---- OPTIMIZACIONES ---
+Validación cruzada (detectar fallo):
+  if(abs(Tc - Td) > 10.0) {
+    if(Td == -127.0 || Td == 85.0) usar_NTC();
+    if(Tc < -50 || Tc > 100) usar_DS18B20();
+  }
 
-Reducir parpadeo:
-- Usar clearDisplay() solo cuando necesario
-- Actualizar solo áreas cambiadas
-- Mantener timing consistente
+--- TIMING Y PERFORMANCE ---
 
-Mejorar legibilidad:
-- Usar fuentes apropiadas al tamaño
-- Alto contraste texto/fondo
-- Espaciado consistente
-- Alinear valores numéricamente
-
-Eficiencia energética:
-- Reducir frecuencia actualización OLED
-- Usar fondos oscuros (apaga píxeles)
-- Sleep entre lecturas si no crítico
+Ciclo completo: ~1.5 segundos
+  • Leer NTC: ~1ms
+  • Conversión DS18B20: 1000ms (modo parásito)
+  • Actualizar OLED: ~20ms
+  • Delay adicional: 500ms
 
 --- NOTAS IMPORTANTES ---
 
-• DS18B20 toma ~750ms para conversión 12-bit
-• Actualización OLED ~10-50ms dependiendo contenido
-• I2C puede compartir bus con otros dispositivos
-• Verificar direcciones I2C únicas por dispositivo
-• NTC más rápido pero menos preciso que DS18B20
-• Combinar ambos permite validación cruzada
+• DS18B20 modo parásito requiere pull-up 4.7kΩ y delay 1000ms
+• NTC responde más rápido que DS18B20 por inercia térmica
+• OLED consume ~8mA durante actualización
+• Direcciones I2C típicas: 0x3C o 0x3D
+• U8g2 usa 1KB RAM para buffer 128x64
 
 --- TROUBLESHOOTING ---
 
-OLED no muestra nada: Verificar dirección I2C (0x3C/0x3D)
-DS18B20 lee -127°C: Sensor desconectado o sin pull-up
-NTC valores erráticos: Añadir filtro EMA
-Display parpadea: Mejorar fuente alimentación
+OLED no muestra: Verificar dirección I2C y conexiones SDA/SCL
+DS18B20 lee -127°C: Sensor desconectado o sin pull-up 4.7kΩ
+DS18B20 lee 85°C: Conversión no completada, aumentar delay
+NTC erráticos: Añadir filtro EMA o verificar conexiones
+Gran diferencia: Normal por inercia térmica, esperar 2 minutos
 
 ===============================================================================
 */
