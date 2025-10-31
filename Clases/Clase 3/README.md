@@ -60,6 +60,13 @@ Sensor de temperatura analógico usando termistor NTC con ecuación Steinhart-Ha
 - **Hardware**: NTC 10kΩ en GPIO 1 + resistencia 10kΩ, LED en GPIO 2
 - **Características avanzadas**: Calibración por factor de corrección, configuración optimizada ADC (atenuación 11dB)
 
+### 3.3.1 - Lectura de NTC - Calibrado Interno
+📁 `Código/3.3.1 Lectura de NTC - Calibrado Interno/` | 📄 [README](Código/3.3.1%20Lectura%20de%20NTC%20-%20Calibrado%20Interno/README.md)
+
+Sensor de temperatura NTC con calibración automática del ADC usando valores eFuse del ESP32.
+- **Hardware**: NTC 10kΩ en GPIO 1 + resistencia 10kΩ, LED en GPIO 2
+- **Características avanzadas**: Calibración automática eFuse, sin necesidad de multímetro, mayor precisión
+
 ### 3.4 - Lectura de DS18B20
 📁 `Código/3.4 Lectura de DS18B20/` | 📄 [README](Código/3.4%20Lectura%20de%20DS18B20/README.md)
 
@@ -124,8 +131,6 @@ Cada proyecto construye sobre el anterior, culminando en un sistema completo de 
 - Crear gráficos de temperatura en tiempo real
 
 ### Nivel Avanzado
-- Enviar datos por WiFi a servidor/MQTT
-- Dashboard web con visualización en tiempo real
 - Sistema multi-sensor (agregar humedad, presión, etc.)
 
 ## 📚 Referencias

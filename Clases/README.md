@@ -25,10 +25,11 @@ Este directorio contiene el material educativo organizado por clases del Curso d
 - **Código:**
   - [3.1 Lectura de ADC](./Clase%203/Código/3.1%20Lectura%20de%20ADC/) - Conversión analógico-digital
   - [3.2 Filtros Digitales](./Clase%203/Código/3.2%20Filtros%20Digitales/) - Procesamiento de señales
-  - [3.3 Lectura de NTC](./Clase%203/Código/3.3%20Lectura%20de%20NTC/) - Sensor de temperatura NTC
-  - [3.4 Temperaturas en OLED](./Clase%203/Código/3.4%20Temperaturas%20en%20OLED/) - Display de datos
-  - [3.5 Lectura de DS18B20](./Clase%203/Código/3.5%20Lectura%20de%20DS18B20/) - Sensor digital de temperatura
-  - [3.6 OLED](./Clase%203/Código/3.6%20OLED/) - Manejo de pantalla OLED
+  - [3.3 Lectura de NTC](./Clase%203/Código/3.3%20Lectura%20de%20NTC/) - Sensor de temperatura NTC (calibración manual)
+  - [3.3.1 Lectura de NTC - Calibrado Interno](./Clase%203/Código/3.3.1%20Lectura%20de%20NTC%20-%20Calibrado%20Interno/) - Sensor NTC con calibración automática eFuse
+  - [3.4 Lectura de DS18B20](./Clase%203/Código/3.4%20Lectura%20de%20DS18B20/) - Sensor digital de temperatura
+  - [3.5 OLED](./Clase%203/Código/3.5%20OLED/) - Manejo de pantalla OLED
+  - [3.6 Temperaturas en OLED](./Clase%203/Código/3.6%20Temperaturas%20en%20OLED/) - Sistema multi-sensor con display
 - **Documentación:** Material teórico sobre sensores y comunicación
 
 ### [Clase 4](./Clase%204/) - Conectividad WiFi y Servidor Web
