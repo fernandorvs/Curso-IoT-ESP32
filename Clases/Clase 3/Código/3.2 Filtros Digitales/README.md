@@ -10,7 +10,7 @@ Implementación de filtro EMA (Exponential Moving Average) para suavizar lectura
 
 | Componente | Pin | Notas |
 |------------|-----|-------|
-| Potenciómetro | GPIO 34 | ADC1_CH6 |
+| Potenciómetro | GPIO 1 | ADC entrada analógica |
 
 ---
 

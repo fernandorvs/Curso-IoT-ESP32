@@ -22,7 +22,7 @@
 #include <Arduino.h>
 #include <math.h>
 
-const int PIN_ADC = 34; const int PIN_LED = 2;
+const int PIN_ADC = 1; const int PIN_LED = 2;
 const float VREF = 3.3, R_FIXED = 10000, R0 = 10000, CT0 = 298.15, BETA = 3950;
 
 void setup() {
@@ -33,7 +33,7 @@ void setup() {
 void loop() {
     int raw = analogRead(PIN_ADC);
     float v = raw * (VREF / 4095.0);
-    float R = R_FIXED * (VREF / v - 1);
+    float R = R_FIXED * v / (VREF - v);
     float Tc = (1 / (1 / CT0 + log(R / R0) / BETA)) - 273.15;
     Serial.printf("T=%.2f °C", Tc);
     Serial.println();    

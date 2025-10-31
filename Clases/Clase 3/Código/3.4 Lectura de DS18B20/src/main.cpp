@@ -23,20 +23,31 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-OneWire oneWire(3);
+// =====================================================================
+// CONFIGURACIÓN DE PINES - MODIFICAR SEGÚN TU CONEXIÓN
+// =====================================================================
+#define PIN_DS18B20  3    // Pin GPIO para el DS18B20 (1-Wire)
+
+OneWire oneWire(PIN_DS18B20);
 DallasTemperature ds(&oneWire);
 
 void setup(){ 
     Serial.begin(115200); 
-    ds.begin(); 
+    ds.begin();
+    
+    Serial.println("\n=== DS18B20 Sensor Digital ===");
+    Serial.printf("Pin DS18B20: GPIO%d\n", PIN_DS18B20);
+    Serial.printf("Sensores detectados: %d\n", ds.getDeviceCount());
 }
 
 void loop(){
-    // Control manual del tiempo para modo parasítico
+  
+    // Control manual del tiempo para modo parásito
     ds.setWaitForConversion(false);
     ds.requestTemperatures();
-    delay(1000); // Tiempo necesario para conversión parasítica
-    
+    // Tiempo necesario para conversión en modo parásito
+    delay(1000);
+
     float t = ds.getTempCByIndex(0);
     Serial.printf("DS18B20: %.2f °C", t);
     Serial.println();

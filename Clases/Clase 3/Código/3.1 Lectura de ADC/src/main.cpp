@@ -21,7 +21,7 @@
 
 #include <Arduino.h>
 
-const int PIN_ADC = 34;
+const int PIN_ADC = 1;
 
 void setup() {
     Serial.begin(115200);
@@ -30,7 +30,7 @@ void setup() {
 void loop() {
     int raw = analogRead(PIN_ADC);
     float v = raw * (3.3f / 4095.0f);
-    Serial.printf("RAW=%d  V=%.2f", raw, v);
+    Serial.printf("RAW=%04d  V=%.3f", raw, v);
     Serial.println();
     delay(200);
 }

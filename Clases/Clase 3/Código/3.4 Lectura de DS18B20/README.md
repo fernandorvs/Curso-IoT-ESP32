@@ -10,7 +10,7 @@ Lectura de temperatura usando sensor digital DS18B20 con protocolo 1-Wire. Senso
 
 | Componente | Pin | Notas |
 |------------|-----|-------|
-| DS18B20 | GPIO 4 | Protocolo 1-Wire |
+| DS18B20 | GPIO 3 | Protocolo 1-Wire, modo parásito |
 
 ---
 
@@ -18,8 +18,10 @@ Lectura de temperatura usando sensor digital DS18B20 con protocolo 1-Wire. Senso
 
 - Sensor digital de temperatura DS18B20
 - Protocolo 1-Wire (un solo pin)
+- Modo parásito (sin alimentación externa)
 - Precisión ±0.5°C
 - Librerías OneWire y DallasTemperature
+- Conversión con delay de 1 segundo
 
 ---
 

@@ -21,7 +21,7 @@
 
 #include <Arduino.h>
 
-const int PIN_ADC = 34;
+const int PIN_ADC = 1;
 float ema = 0;
 
 void setup() {
@@ -31,7 +31,8 @@ void setup() {
 void loop() {
     int x = analogRead(PIN_ADC);
     ema = 0.2 * x + 0.8 * ema;
-    Serial.printf("%d,%.1f", x, ema);
+    // Serial.printf("%d,%.1f", x, ema);
+    Serial.printf(">raw:%d,filtrada:%.1f", x, ema); // Teleplotter format
     Serial.println();
     delay(100);
 }

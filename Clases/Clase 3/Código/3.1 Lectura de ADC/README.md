@@ -10,7 +10,7 @@ Lectura básica del ADC (Conversor Analógico-Digital) del ESP32 con conversión
 
 | Componente | Pin | Notas |
 |------------|-----|-------|
-| Potenciómetro | GPIO 34 | ADC1_CH6 |
+| Potenciómetro | GPIO 1 | ADC entrada analógica |
 
 ---
 

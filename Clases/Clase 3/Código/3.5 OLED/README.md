@@ -10,7 +10,7 @@ Control básico de pantalla OLED SSD1306 128x64 mediante I2C. Muestra texto y gr
 
 | Componente | Pin | Notas |
 |------------|-----|-------|
-| OLED SSD1306 | SDA: GPIO20, SCL: GPIO21 | Display 128x64 I2C |
+| OLED SSD1306 | SDA: GPIO20, SCL: GPIO21 | Display 128x64 I2C (ESP32-C3) |
 
 ---
 

@@ -29,30 +29,41 @@
 
 #include <math.h>
 
+// Configuración de pines
+#define PIN_NTC_ADC   1    // Pin ADC para NTC
+#define PIN_DS18B20   3    // Pin para DS18B20
+
 // Constructor para OLED I2C 128x64 (mismo que 3.5 OLED)
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
 
-OneWire oneWire(4);
+OneWire oneWire(PIN_DS18B20);
 DallasTemperature ds(&oneWire);
 
 const float VREF = 3.3, R_FIXED = 10000, R0 = 10000, PT0 = 298.15, BETA = 3950;
 
 void setup() {
-    // ESP32-C3 SDA = GPIO20, SCL = GPIO21 (mismo que 3.5 OLED)
-    Wire.begin(20, 21);
+    // ESP32-C3 SDA = GPIO8, SCL = GPIO9 (mismo que 3.5 OLED)
+    Wire.begin(8, 9);
     u8g2.begin();
     ds.begin();
 }
 
 void loop() {
     // Leer NTC
-    int raw = analogRead(34);
+    int raw = analogRead(PIN_NTC_ADC);
     float v = raw * (VREF / 4095.0);
-    float R = R_FIXED * (VREF / v - 1);
+    float R = R_FIXED * v / (VREF - v);
     float Tc = (1 / (1 / PT0 + log(R / R0) / BETA)) - 273.15;
 
     // Leer DS18B20
+
+    // Control manual del tiempo para modo parásito
+    ds.setWaitForConversion(false);
     ds.requestTemperatures();
+
+    // Tiempo necesario para conversión en modo parásito
+    delay(1000);
+
     float Td = ds.getTempCByIndex(0);
 
     // Mostrar en OLED con U8G2
