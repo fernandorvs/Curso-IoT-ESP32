@@ -23,7 +23,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-OneWire oneWire(4);
+OneWire oneWire(3);
 DallasTemperature ds(&oneWire);
 
 void setup(){ 
@@ -32,7 +32,11 @@ void setup(){
 }
 
 void loop(){
+    // Control manual del tiempo para modo parasítico
+    ds.setWaitForConversion(false);
     ds.requestTemperatures();
+    delay(1000); // Tiempo necesario para conversión parasítica
+    
     float t = ds.getTempCByIndex(0);
     Serial.printf("DS18B20: %.2f °C", t);
     Serial.println();
