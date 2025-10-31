@@ -3,9 +3,7 @@
 ## Sistema integrado: dos sensores de temperatura visualizados en OLED.
 - **Hardware**: OLED + NTC + DS18B20 (combinación de proyectos anteriores)
 
-## 🔧 Cómo Usar los Proyectos
-
-### Requisitostivos
+## 🎯 Objetivos de Aprendizaje
 
 Al finalizar esta clase serás capaz de:
 - Leer sensores analógicos usando el ADC del ESP32
@@ -76,8 +74,7 @@ Control básico de display OLED SSD1306 con comunicación I2C.
 Sistema integrado: dos sensores de temperatura visualizados en OLED.
 - **Hardware**: OLED + NTC + DS18B20 (combinación de proyectos anteriores)
 
-
-## � Cómo Usar los Proyectos
+## 🔧 Cómo Usar los Proyectos
 
 ### Requisitos
 - **PlatformIO**: Extensión para VS Code o CLI
