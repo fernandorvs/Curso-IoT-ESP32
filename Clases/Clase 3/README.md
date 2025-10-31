@@ -137,7 +137,7 @@ Cada proyecto construye sobre el anterior, culminando en un sistema completo de 
 
 ### Librerías
 - [DallasTemperature](https://github.com/milesburton/Arduino-Temperature-Control-Library)
-- [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
+- [U8g2](https://github.com/olikraus/u8g2) - Biblioteca para displays OLED/LCD
 
 ---
 
