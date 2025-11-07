@@ -23,6 +23,7 @@
 #include <WebServer.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <esp_adc_cal.h>
 #include <math.h>
 
 // Configuración WiFi - COMPLETAR CON TUS CREDENCIALES
@@ -37,20 +38,19 @@ WebServer server(80);
 const float VREF = 3.3;
 const float R_FIXED = 10000;  // Resistencia fija en divisor de voltaje
 const float R0 = 10000;       // Resistencia NTC a 25°C
-const float PT0 = 298.15;     // 25°C en Kelvin
+const float CT0 = 298.15;     // 25°C en Kelvin
 const float BETA = 3950;      // Coeficiente Beta del NTC
+
+// Calibración ADC eFuse
+esp_adc_cal_characteristics_t adc_chars;
 
 // Configuración según el modelo
 #ifdef ESP32C3
-#define LED_PIN 8
-const int NTC_PIN = 0;        // ESP32-C3: GPIO0 (ADC1_CH0) - Compatible con WiFi
+const int NTC_PIN = 1;        // ESP32-C3: GPIO1 (ADC1_CH0) - Compatible con WiFi
 const int DS18B20_PIN = 3;    // ESP32-C3: GPIO3
-bool logicaInvertida = false;
 #else
-#define LED_PIN 2
 const int NTC_PIN = 32;       // ESP32 DevKit: GPIO32 (ADC1_CH4) - Compatible con WiFi
 const int DS18B20_PIN = 4;    // ESP32 DevKit: GPIO4
-bool logicaInvertida = true;
 #endif
 
 // DS18B20 - Sensor digital 1-Wire
@@ -60,9 +60,6 @@ DallasTemperature sensorDS(&oneWire);
 // Variables para almacenar temperaturas
 float temperaturaNTC = 0.0;
 float temperaturaDS18B20 = 0.0;
-
-// Variable global para el estado del LED
-bool ledState = false;
 
 // Control de tiempo para mensajes de estado periódicos
 uint32_t previousStatusMillis = 0;
@@ -74,35 +71,37 @@ const uint32_t sensorInterval = 2000; // 2 segundos
 
 // Función para leer temperatura del NTC
 float leerNTC() {
-    int rawADC = analogRead(NTC_PIN);
-    float voltaje = rawADC * (VREF / 4095.0);
+    int raw = analogRead(NTC_PIN);
+    
+    // Convertir ADC a voltaje calibrado con eFuse
+    uint32_t voltage_mv = esp_adc_cal_raw_to_voltage(raw, &adc_chars);
+    float v = voltage_mv / 1000.0;
     
     // Validar lectura
-    if (voltaje < 0.1 || voltaje > (VREF - 0.1)) {
-        Serial.printf("Advertencia NTC: voltaje fuera de rango (%.3fV, ADC=%d)\n", voltaje, rawADC);
+    if (v < 0.1 || v > (VREF - 0.1)) {
+        Serial.printf("Advertencia NTC: voltaje fuera de rango (%.3fV, ADC=%d)\n", v, raw);
         return -999.0; // Valor de error
     }
     
     // Calcular resistencia del NTC
-    float resistenciaNTC = R_FIXED * (VREF / voltaje - 1);
+    float R = R_FIXED * v / (VREF - v);
     
     // Validar resistencia calculada
-    if (resistenciaNTC < 100 || resistenciaNTC > 1000000) {
-        Serial.printf("Advertencia NTC: resistencia fuera de rango (%.2f ohms)\n", resistenciaNTC);
+    if (R < 100 || R > 1000000) {
+        Serial.printf("Advertencia NTC: resistencia fuera de rango (%.2f ohms)\n", R);
         return -999.0; // Valor de error
     }
     
     // Ecuación de Steinhart-Hart simplificada (Beta)
-    float temperaturaKelvin = 1.0 / (1.0 / PT0 + log(resistenciaNTC / R0) / BETA);
-    float temperaturaCelsius = temperaturaKelvin - 273.15;
+    float Tc = (1 / (1 / CT0 + log(R / R0) / BETA)) - 273.15;
     
     // Validar temperatura resultante
-    if (temperaturaCelsius < -50 || temperaturaCelsius > 150) {
-        Serial.printf("Advertencia NTC: temperatura fuera de rango (%.2f°C)\n", temperaturaCelsius);
+    if (Tc < -50 || Tc > 150) {
+        Serial.printf("Advertencia NTC: temperatura fuera de rango (%.2f°C)\n", Tc);
         return -999.0; // Valor de error
     }
     
-    return temperaturaCelsius;
+    return Tc;
 }
 
 // Función para leer temperatura del DS18B20
@@ -238,11 +237,9 @@ void setup() {
     Serial.println();
     Serial.println("=== ESP32 Monitor de Temperaturas ===");
 
-    // Configurar LED de indicación
-    pinMode(LED_PIN, OUTPUT);
-    digitalWrite(LED_PIN, logicaInvertida ? LOW : HIGH);
-    ledState = false;
-    Serial.printf("LED indicador en pin %d\n", LED_PIN);
+    // Calibrar ADC con valores eFuse de fábrica
+    esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_12, 1100, &adc_chars);
+    Serial.println("ADC calibrado con valores eFuse");
 
     // Configurar pin NTC
     pinMode(NTC_PIN, INPUT);
@@ -250,8 +247,9 @@ void setup() {
     
     // Diagnóstico inicial NTC
     int rawTest = analogRead(NTC_PIN);
-    float voltTest = rawTest * (VREF / 4095.0);
-    Serial.printf("  - Lectura ADC inicial: %d (%.3fV)\n", rawTest, voltTest);
+    uint32_t voltage_mv_test = esp_adc_cal_raw_to_voltage(rawTest, &adc_chars);
+    float voltTest = voltage_mv_test / 1000.0;
+    Serial.printf("  - Lectura ADC inicial: %d (%.3fV calibrado)\n", rawTest, voltTest);
 
     // Inicializar sensor DS18B20
     sensorDS.begin();
@@ -298,10 +296,6 @@ void setup() {
         Serial.print("Abrir en el navegador: http://");
         Serial.println(WiFi.localIP());
         Serial.println("==================================");
-        
-        // Encender LED cuando está conectado
-        digitalWrite(LED_PIN, logicaInvertida ? HIGH : LOW);
-        ledState = true;
     } else {
         Serial.println();
         Serial.println("Error: No se pudo conectar a WiFi");
@@ -427,12 +421,10 @@ AUTO-REFRESH:
 ESP32 DevKit (clásico):
   • NTC:     GPIO32 (ADC1_CH4) + Resistencia 10kΩ
   • DS18B20: GPIO4 (1-Wire) + Resistencia pull-up 4.7kΩ
-  • LED:     GPIO2 (indicador de WiFi)
 
 ESP32-C3 SuperMini:
-  • NTC:     GPIO0 (ADC1_CH0) + Resistencia 10kΩ
+  • NTC:     GPIO1 (ADC1_CH0) + Resistencia 10kΩ
   • DS18B20: GPIO3 (1-Wire) + Resistencia pull-up 4.7kΩ
-  • LED:     GPIO8 (indicador de WiFi)
 
 IMPORTANTE: Todos los pines ADC utilizados son de ADC1, compatibles con WiFi.
 

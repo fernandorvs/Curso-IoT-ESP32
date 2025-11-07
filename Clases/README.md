@@ -32,23 +32,23 @@ Este directorio contiene el material educativo organizado por clases del Curso d
   - [3.6 Temperaturas en OLED](./Clase%203/Código/3.6%20Temperaturas%20en%20OLED/) - Sistema multi-sensor con display
 - **Documentación:** Material teórico sobre sensores y comunicación
 
-### [Clase 4](./Clase%204/) - Conectividad WiFi y Servidor Web
+### [Clase 4](./Clase%204/) - Conectividad WiFi y Servidor Web IoT
 - **Código:**
-  - [4.1 WiFi Básico](./Clase%204/Código/4.1%20WiFi%20Básico/) - Conexión a red WiFi
+  - [4.1 WiFi Básico](./Clase%204/Código/4.1%20WiFi%20Básico/) - Conexión a red WiFi con monitoreo
   - [4.2 Servidor Básico](./Clase%204/Código/4.2%20Servidor%20Básico/) - Servidor HTTP simple
-  - [4.3 Control LED Remoto](./Clase%204/Código/4.3%20Control%20LED%20Remoto/) - Control vía web
-  - [4.4 Lectura de Sensores](./Clase%204/Código/4.4%20Lectura%20de%20Sensores/) - API de sensores
-  - [4.5 Dashboard Completo](./Clase%204/Código/4.5%20Dashboard%20Completo/) - Interfaz web completa
-  - [web-dashboard-mejorado.html](./Clase%204/Código/web-dashboard-mejorado.html) - Dashboard web mejorado
-- **Documentación:** Guías de conectividad y desarrollo web
-- **Final:** Proyecto integrador
+  - [4.3 Control LED Remoto](./Clase%204/Código/4.3%20Control%20LED%20Remoto/) - Control vía web con REST API
+  - [4.4 Lectura de Sensores](./Clase%204/Código/4.4%20Lectura%20de%20Sensores/) - API REST de sensores con JSON
+  - [4.5 Dashboard Completo](./Clase%204/Código/4.5%20Dashboard%20Completo/) - Dashboard con LittleFS y OLED
+- **Documentación:** 
+  - [Slides Clase 4](./Clase%204/Docs/Slides_Clase_4.md) - Presentación completa sobre TCP/IP y servidor web
+- **Final:** Proyecto integrador IoT completo
 
 ## 🎯 Objetivos de Aprendizaje
 
 1. **Clase 1**: Familiarización con ESP32 y programación básica
 2. **Clase 2**: Programación no bloqueante y máquinas de estado
 3. **Clase 3**: Integración de sensores y procesamiento de datos
-4. **Clase 4**: Conectividad IoT y interfaces web
+4. **Clase 4**: Conectividad IoT, servidor web, API REST y dashboards interactivos
 
 ## 📋 Prerrequisitos
 

@@ -283,16 +283,20 @@ lib_deps =
 ### Estructura de Archivos
 ```
 Clase 4/
-├── README.md
+├── README.md                                    ← Índice de la clase
 ├── Código/
-│   ├── 4.1 WiFi Básico/
-│   ├── 4.2 Servidor Básico/
-│   ├── 4.3 API Sensores/
-│   ├── 4.4 Control LED/
-│   ├── 4.5 Dashboard Completo/
-│   └── 4.6 Proyecto Final/
-└── Docs/
-    └── Curso_IoT_ESP32_UNSE_Clase_4.pdf
+│   ├── 4.1 WiFi Básico/                        ← Conexión WiFi básica
+│   ├── 4.2 Servidor Básico/                    ← Servidor HTTP simple
+│   ├── 4.3 Control LED Remoto/                 ← Control LED vía web
+│   ├── 4.4 Lectura de Sensores/                ← API de sensores
+│   └── 4.5 Dashboard Completo/                 ← Dashboard con LittleFS
+├── Diagramas/                                   ← Diagramas PlantUML (.pu)
+├── Docs/
+│   └── Slides_Clase_4.md                       ← Presentación completa
+└── Final/                                       ← Proyecto integrador final
+    ├── platformio.ini
+    ├── data/                                    ← Archivos web (LittleFS)
+    └── src/                                     ← Código ESP32
 
 ```
 
